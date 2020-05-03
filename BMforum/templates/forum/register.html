@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+</head>
+<body>
+    <div style="margin: 15% 40%;">
+        <h1>欢迎注册！</h1>
+        <p>
+            <a href="{% url 'forum:index' %}">index</a>
+        </p>
+
+
+        <from action="" method="POST">
+            {% csrf_token %}
+            {{注册表单.as_p}}
+            <p>
+                <button type="submit">注册</button>
+            </p>
+
+        </from>
+    </div>
+</body>
+</html>
+
