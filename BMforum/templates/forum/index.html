@@ -8,7 +8,7 @@
   <div style="margin: 15% 40%;">
     <h1>{{ welcome }}</h1>
     <h1>
-      <a href="{% url 'forum:login' %}">登录</a>
+      <a href="{% url 'login' %}?next={{ request.path }}">登录</a>
     </h1>
     <h1>
       <a href="{% url 'forum:register' %}">注册</a>
