@@ -110,6 +110,55 @@
                 </div>
             </main>
             <aside class="col-md-4">
+                <div>
+                    {% if request.user.is_authenticated %}
+                    <!-- Form -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Logged In
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="form-group">Hi:{{ user }}<img src="/media/{{ user.avatar }}" alt=""> <a href="{% url 'logout' %}"><input class="btn btn-default" type="submit" value="Logout" /></a></div>
+                            <div><a  class="glyphicon glyphicon-edit" href="{% url 'posts:add' %}">发帖</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="glyphicon glyphicon-home" href="{% url 'posts:profile' user.pk%}">个人主页</a> </div>
+
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Log In
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                        <p>你还没有登录，请
+        {#                    <button class="btn btn-default"><a href="{% url 'login' %}">登录</a></button>#}
+                            <a href="{% url 'login' %}">登录</a>
+                            或者
+                            <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
+                        </p>
+        {#					<form action="/focus/login/" method="post">#}
+        {#						{% csrf_token %}#}
+        {#						{{ loginform.non_field_errors }}#}
+        {#						<div class="form-group">#}
+        {#							{{ loginform.uid }}#}
+        {#						<!--	<input type="text" class="form-control" id="uid" name="uid" placeholder="Username">  -->#}
+        {#						</div>#}
+        {#						<div class="form-group">#}
+        {#							{{ loginform.pwd }}#}
+        {#						<!--	<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">  -->#}
+        {#						</div>#}
+        {#						<button type="submit" class="btn btn-default">Log In</button>#}
+        {#					</form>#}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
                 <div class="widget widget-recent-posts">
                     <h3 class="widget-title">最新</h3>
                     <ul>
