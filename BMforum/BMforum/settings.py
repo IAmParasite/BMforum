@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'forum',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +120,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#其他设置
+AUTH_USER_MODEL = 'users.User'
+
+#AUTHENTICATION_BACKENDS = (
+    #'django.contrib.auth.backends.ModelBackend',
+    #'users.backends.EmailBackend',
+#)
+
+#LOGOUT_REDIRECT_URL = '/index/'
+#LOGIN_REDIRECT_URL = '/index/'
+
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace('\\','/')
+
+# 发邮件设置
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
