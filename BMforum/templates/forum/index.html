@@ -115,8 +115,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                          <a href="{% url 'forum:login' %}">登录</a>
-                          <a href="{% url 'forum:register' %}">注册</a>
+                           <a href="{% url 'login' %}?next={{ request.path }}">登录</ a>
+                          <a href="{% url 'users:register' %}">注册</a>
                         </h3>
                     </div>
                 </div>
