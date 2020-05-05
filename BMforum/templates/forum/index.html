@@ -67,10 +67,11 @@
     <div class="container">
         <div class="row">
             <main class="col-md-8">
+			
                 <article class="post post-1">
                     <header class="entry-header">
                         <h1 class="entry-title">
-                            <a href="single.html">热门书籍</a>
+                            <a href="">热门书籍</a>
                         </h1>
                         <div class="entry-meta">
                             <span class="post-category"><a href="#">科幻</a></span>
@@ -89,7 +90,33 @@
                     </div>
                 </article>
 
-                
+
+				{% for post in post_list %}
+                <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+							<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+						</h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">Django 博客教程</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                            <span class="post-author"><a href="#">追梦人物</a></span>
+                            <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">xx 评论</a></span>
+                            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{{ post.excerpt }}...</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+		{% empty %}
+		<div class="no-post">暂时还没有发布的文章！</div>
+		{% endfor %}
+		
                 <!-- 简单分页效果
                 <div class="pagination-simple">
                     <a href="#">上一页</a>
@@ -112,14 +139,18 @@
                 </div>
             </main>
             <aside class="col-md-4">
+			{% if request.user.is_authenticated %}
+				<li> 欢迎 {{ user }} 用户 </li>
+			{% else %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                           <a href="{% url 'login' %}?next={{ request.path }}">登录</ a>
+                           <a href="{% url 'login' %}">登录</ a>
                           <a href="{% url 'users:register' %}">注册</a>
                         </h3>
                     </div>
                 </div>
+			{% endif %}
                 <div class="widget widget-recent-posts">
                     <h3 class="widget-title">最新</h3>
                     <ul>
