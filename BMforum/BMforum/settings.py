@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     
     'DjangoUeditor',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
