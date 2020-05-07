@@ -30,5 +30,8 @@ urlpatterns = [
     #path('ckeditor',include('ckeditor_uploader.urls')),
     # path('blog/',include(''))
     path('comment/',include('comments.urls'))
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 ]

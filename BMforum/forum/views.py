@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from django.shortcuts import render
 def index(request):
     return render(request, 'forum/index.html', context={
@@ -7,6 +8,8 @@ def index(request):
     })
 # Create your views here.
 =======
+=======
+>>>>>>> Stashed changes
 import re
 import markdown
 from django.shortcuts import render, get_object_or_404, redirect
@@ -127,4 +130,7 @@ class TagView(ListView):
     def get_queryset(self):
         t = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
         return super(TagView, self).get_queryset().filter(tag=t)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
