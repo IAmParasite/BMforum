@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>书籍影视交流平台</title>
+
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- css -->
+
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{% static 'forum/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/pace.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/custom.css' %}">
+
+    <!-- js -->
+    <script src="{% static 'forum/js/jquery-2.1.3.min.js' %}"></script>
+    <script src="{% static 'forum/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'forum/js/pace.min.js' %}"></script>
+    <script src="{% static 'forum/js/modernizr.custom.js' %}"></script>
+</head>
+
+<body>
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="index.html"><b>书籍影视</b>交流平台</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+            <div class="col-md-8 col-sm-7 col-xs-4">
+                <nav class="main-nav" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="trigger-overlay" class="navbar-toggle">
+                            <span class="ion-navicon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="cl-effect-11"><a href="index.html" data-hover="首页">首页</a></li>
+                            <li class="cl-effect-11"><a href="full-width.html" data-hover="书籍">书籍</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="影视">影视</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="小组">小组</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="话题">话题</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+                <div id="header-search-box">
+                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+                    <div id="search-form" class="search-form">
+                        <form role="search" method="get" id="searchform" action="#">
+                            <input type="search" placeholder="搜索" required>
+                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- col-md-8 -->
+        </div>
+    </header>
+</div>
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+				{% block main %}
+                
+                
+               
+				{% endblock main %}
+        <!-- Center Column -->
+        <div class="col-sm-9">
+            <!-- Article -->
+            <div class="row">
+                
+            </div>
+            <hr>
+            
+           
+            <!-- CommentForm   -->
+            <div class="row">
+                <article class="col-xs-12">
+                    <div style = "margin-top:2em;border:1px dashed;padding:2em;">
+                        <h3 class="comment-area-title">提交评论区域 </h3>
+                        {%if user.is_authenticated %}
+                        <form action ="{%url 'comments:update_comment' %}" method="POST" style ="overflow:hidden">
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <label for="comment-text">{{user.username}},欢迎评论</lable>
+                                    <textarea id = "comment-text" class ="form-control" name="text" row ="4">
+                                        </textarea>
+                            </div>
+                            <input type="hidden" name="object_id" value="{{post.pk}}">
+                            <input type="hidden" name="content_type" value="post">
+                            <input type="submit" class="btn btn-promary" value="评论" style="float:right">
+                            </form>
+                        
+                        {%else%}
+                        未登录
+                        <form action = "{%url 'login'%}" method = "POST">
+                            {%csrf_token%}
+                            <input type = "text" name = "username">
+                            <input type = "password" name = "password">
+                                <input type = "submit" value = "提交">
+                        </form>
+                        {%endif%}
+                    </div>
+                    <div class ="comment-area">
+                        <h3 class = "comment-area-title">评论列表</h3>
+                        {%for comment in comments %}
+                        <div>
+                            {{comment.user.username}}
+                            ({{comment.created_time|date:"Y-m-d H:n;s"}}):
+                            {{comment.text}}
+                        </div>
+                        {%empty%}
+                        暂无评论
+                        {%endfor%}
+                    
+                </article>
+            </div>
+            <hr>
+        </div><!--/Center Column-->
+		
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+                <div class="pagination">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">4</a></li>
+                        <li><a href="">5</a></li>
+                        <li class="current"><a href="">6</a></li>
+                        <li><a href="">7</a></li>
+                        <li><a href="">8</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">11</a></li>
+                    </ul>
+                </div>
+            </main>
+            <aside class="col-md-4">
+			{% if request.user.is_authenticated %}
+				<li> 欢迎 {{ user }} 用户 </li>
+				<a href="{% url 'logout' %}">
+					<input class="btn btn-default" type="submit" value="Logout" />
+				</a>
+			{% else %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                           <a href="{% url 'login' %}">登录</ a>
+                          <a href="{% url 'users:register' %}">注册</a>
+                        </h3>
+                    </div>
+                </div>
+			{% endif %}
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django 博客开发入门教程：前言</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">归档</h3>
+                    <ul>
+                        <li>
+                            <a href="#">2017 年 5 月</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="widget widget-tag-cloud">
+                    <h3 class="widget-title">标签云</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">&copy 2020 BUAA 软件学院
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'forum/js/script.js' %}"></script>
+
+</body>
+</html>

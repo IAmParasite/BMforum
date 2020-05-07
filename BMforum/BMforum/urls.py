@@ -15,8 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< Updated upstream
     path('', include('forum.urls')),
+=======
+    path('', include('forum.urls', namespace='forum')),
+    path('users/', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
+    #path('ueditor/',include('DjangoUeditor.urls' )),
+    #path('', include('comments.urls')),
+    #path('ckeditor',include('ckeditor_uploader.urls')),
+    # path('blog/',include(''))
+    path('comment/',include('comments.urls'))
+>>>>>>> Stashed changes
 ]
