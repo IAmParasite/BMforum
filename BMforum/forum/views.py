@@ -1,6 +1,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from django.shortcuts import render
 def index(request):
     return render(request, 'forum/index.html', context={
@@ -9,6 +10,8 @@ def index(request):
     })
 # Create your views here.
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -135,6 +138,9 @@ class TagView(ListView):
         return super(TagView, self).get_queryset().filter(tag=t)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
