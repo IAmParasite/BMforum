@@ -20,7 +20,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', include('forum.urls')),
+    
 
     path('', include('forum.urls', namespace='forum')),
     path('users/', include('django.contrib.auth.urls')),

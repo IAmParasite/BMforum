@@ -20,7 +20,7 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     #path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     #path('comment/(\d+)$', views.comment, name='comment'),
-    path('admin/',admin.site.urls),
+    #path('admin/',admin.site.urls),
     #path('ckeditor',include('ckeditor_uploader.urls')),
    # path('blog/',include(''))
     path('login/',views.login,name = 'login'),
