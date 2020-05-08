@@ -1,21 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ title }}</title>
-</head>
-<body>
-<h1>{{ welcome }}</h1>
-</body>
-</html>
-
-
-
 
 {% block main %}
-    {% for post in post_list %}
+		{% for post in post_list %}
                 <article class="post post-1">
                     <header class="entry-header">
                         <h1 class="entry-title">
@@ -37,17 +24,6 @@
                         </div>
                     </div>
                 </article>
-<!-- Center Column -->
-<div class="col-sm-9">
-    <!-- Article -->
-    <div class="row">
-        <article class="col-xs-12">
-            
-        </article>
-    </div>
-    <hr>
-    
-    
 		{% empty %}
 		<div class="no-post">暂时还没有发布的文章！</div>
 		{% endfor %}
@@ -74,3 +50,4 @@
 					</div>
 		{% endif %}
 {% endblock main %}
+            

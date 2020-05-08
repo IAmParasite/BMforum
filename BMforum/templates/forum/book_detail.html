@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load comments_extras %}
 {% block main %}
                 <article class="post post-{{ post.pk}}">
                     <header class="entry-header">
@@ -15,6 +15,12 @@
                     </header>
                     <div class="entry-content clearfix">
                         {{ post.body_html|safe }}
+                        
+                        <h3>发表评论</h3>
+                        {% show_comment_form post %}
+                        <div class="comment-list-panel">
+                            {% show_comments post %}
+                        </div>
                     </div>
                 </article>
                 

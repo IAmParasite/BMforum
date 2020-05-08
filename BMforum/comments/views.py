@@ -1,90 +1,43 @@
-from django.shortcuts import render, get_object_or_404, redirect,HttpResponse,render_to_response
 from forum.models import Post
-from users.models import User
-from .models import Comment,CommentReply
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+ 
 from .forms import CommentForm
-from django.contrib.auth.decorators import login_required
-import datetime
-import json
-from django.urls import reverse
-# Create your views here.
-
-def update_comment(request):
-    referer = request.META.get('HTTP_REFERER','/')
-    #数据检查
-    user=request.user
-    if not user.is_authenticated:
-        return render(request,'error.html',{'message':'用户未登录','redirect_to':referer})
-    text=request.POST.get('text','').strip()
-    if text=='':
-        return render(request,'error.html',{'message':'评论内容为空','redirect_to':referer})
-    try:
-        content_type=request.POST.get('content_type','')
-        object_id=int(request.POST.get('object_id',''))
-        model_class=ContentType.objects.get(model=content_type).model_class()
-        model_obj=model_class.objects.get(pk=object_id)
-    except Exception as e:
-        return render(request,'error.html',{'message':'评论对象不存在','redirect_to':referer})
-    #检查通过保存数据
-    comment=Comment()
-    comment.user=user
-    comment.text=text
-    comment.content_object=model_obj
-    comment.save()
-    return redirect(referer)
-
-@login_required
-def post_comment(request, post_pk):
+from django.contrib import messages
+ 
+@require_POST
+def comment(request, post_pk):
     # 先获取被评论的文章，因为后面需要把评论和被评论的文章关联起来。
-    # 这里我们使用了 Django 提供的一个快捷函数 get_object_or_404，
+    # 这里我们使用了 django 提供的一个快捷函数 get_object_or_404，
     # 这个函数的作用是当获取的文章（Post）存在时，则获取；否则返回 404 页面给用户。
     post = get_object_or_404(Post, pk=post_pk)
-    context = {}
-    read_cookie_key=read_statistic_one_read(request,post)
-    post_content_type=ContentType.objects.get_for_model(post)
-    comments=Comment.objects.filter(content_type=blog_content_type,objects_id=post.pk)
-    context['previous_post']=Post.objects.filter(create_time_gt=post.created_time).last()
-    context['next_blog']=Blog.objects.filter(created_time_lt=post_created_time).first()
-    context['post']=post
-    context['comments']=comments
-    response = render(request,'templates/base.html',context)
-    response.set_cookie(read_cookie_key,'true')
-    return response
-    # HTTP 请求有 get 和 post 两种，一般用户通过表单提交数据都是通过 post 请求，
-    # 因此只有当用户的请求为 post 时才需要处理表单数据。
-   
-
-def reply(request,com_pk):      # 评论回复逻辑：ajax请求评论的作者和内容，完了存入数据库，再渲染页面
-    if request.is_ajax():
-        content = request.POST.getlist('content')
-        replay_user = request.POST.getlist('user')
-        re_id = User.objects.filter(username = replay_user)
-        replay_time = datetime.datetime.today()
-        author = request.user
-        author1 = author.id
-        comment = Comment.objects.get(id=com_pk)
-        # print(content, replay_user, replay_time, author,comment,author1)
-        if content:
-            CommentReply.objects.create(content=content,comment_id=com_pk,author_id=author1,replay_user_id=author1,replay_time=replay_time)
-            return HttpResponse(json.dumps({'content':content}))
-    else:
-        reply_list = CommentReply.objects.all()
-        return render_to_response('posts/detail3.html',{ 'reply_list':reply_list},content_type="application/json")
-
-
-def new_comment(request):           # 最新评论逻辑：当前登录的作者，找到他所发布的所有帖子，再遍历每篇帖子，
-    newcomment_list =[]              # 找到帖子下所有的评论，再截取最前面的评论，放到一个列表，再遍历列表，显示最前面的
-    userid = request.user
-    userid = 3
-    post_list = Post.objects.filter(author = userid)
-    for post in post_list:
-        comm_list = post.comment_set.all()
-        num = len(comm_list)
-        print('-----------------------------------------------------num',num)
-        if num ==0:
-            pass
-        else:
-            newcomment_list.append(post[:-1])
-    print('------------------------------------newcomment_list',newcomment_list)
-
-    return render(request,'posts/index.html',newcomment_list)
+ 
+    # django 将用户提交的数据封装在 request.POST 中，这是一个类字典对象。
+    # 我们利用这些数据构造了 CommentForm 的实例，这样就生成了一个绑定了用户提交数据的表单。
+    form = CommentForm(request.POST)
+ 
+    # 当调用 form.is_valid() 方法时，django 自动帮我们检查表单的数据是否符合格式要求。
+    if form.is_valid():
+        # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
+        # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
+        comment = form.save(commit=False)
+ 
+        # 将评论和被评论的文章关联起来。
+        comment.post = post
+ 
+        # 最终将评论数据保存进数据库，调用模型实例的 save 方法
+        comment.save()
+ 
+        # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
+        # 然后重定向到 get_absolute_url 方法返回的 URL。
+        messages.add_message(request, messages.SUCCESS, '评论发表成功！', extra_tags='success')
+        return redirect(post)
+ 
+    # 检查到数据不合法，我们渲染一个预览页面，用于展示表单的错误。
+    # 注意这里被评论的文章 post 也传给了模板，因为我们需要根据 post 来生成表单的提交地址。
+    context = {
+        'post': post,
+        'form': form,
+    }
+    messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
+    return render(request, 'comments/preview.html', context=context)

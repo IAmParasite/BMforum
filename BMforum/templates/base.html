@@ -21,7 +21,15 @@
     <script src="{% static 'forum/js/pace.min.js' %}"></script>
     <script src="{% static 'forum/js/modernizr.custom.js' %}"></script>
 </head>
-
+{% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        {{ message }}
+      </div>
+    {% endfor %}
+{% endif %}
 <body>
 <div class="container">
     <header id="site-header">
@@ -68,63 +76,9 @@
         <div class="row">
             <main class="col-md-8">
 				{% block main %}
-                
-                
-               
+				
 				{% endblock main %}
-        <!-- Center Column -->
-        <div class="col-sm-9">
-            <!-- Article -->
-            <div class="row">
-                
-            </div>
-            <hr>
-            
-           
-            <!-- CommentForm   -->
-            <div class="row">
-                <article class="col-xs-12">
-                    <div style = "margin-top:2em;border:1px dashed;padding:2em;">
-                        <h3 class="comment-area-title">提交评论区域 </h3>
-                        {%if user.is_authenticated %}
-                        <form action ="{%url 'comments:update_comment' %}" method="POST" style ="overflow:hidden">
-                            {%csrf_token%}
-                            <div class="form-group">
-                                <label for="comment-text">{{user.username}},欢迎评论</lable>
-                                    <textarea id = "comment-text" class ="form-control" name="text" row ="4">
-                                        </textarea>
-                            </div>
-                            <input type="hidden" name="object_id" value="{{post.pk}}">
-                            <input type="hidden" name="content_type" value="post">
-                            <input type="submit" class="btn btn-promary" value="评论" style="float:right">
-                            </form>
-                        
-                        {%else%}
-                        未登录
-                        <form action = "{%url 'login'%}" method = "POST">
-                            {%csrf_token%}
-                            <input type = "text" name = "username">
-                            <input type = "password" name = "password">
-                                <input type = "submit" value = "提交">
-                        </form>
-                        {%endif%}
-                    </div>
-                    <div class ="comment-area">
-                        <h3 class = "comment-area-title">评论列表</h3>
-                        {%for comment in comments %}
-                        <div>
-                            {{comment.user.username}}
-                            ({{comment.created_time|date:"Y-m-d H:n;s"}}):
-                            {{comment.text}}
-                        </div>
-                        {%empty%}
-                        暂无评论
-                        {%endfor%}
-                    
-                </article>
-            </div>
-            <hr>
-        </div><!--/Center Column-->
+     	
 		
                 <!-- 简单分页效果
                 <div class="pagination-simple">

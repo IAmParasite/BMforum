@@ -1,27 +1,14 @@
-
-from django.shortcuts import render
-def index(request):
-    return render(request, 'forum/index.html', context={
-        'title': '我的博客首页',
-        'welcome': '欢迎访问我的博客首页'
-    })
-# Create your views here.
-
 import re
 import markdown
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
-from forum.models import Post, Category
+from .models import Post, Category, Tag
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import HttpResponse
-from comments.models import Comment
-from comments.forms import CommentForm
-from comments.models import CommentReply
-from comments.views import new_comment
 
 def login(request):
     if request.method=='POST':
@@ -51,7 +38,6 @@ class IndexView(ListView):
     template_name = 'forum/index.html'
     context_object_name = 'post_list'
     #paginate_by = 10
-    
 
 
 # 记得在顶部导入 DetailView
@@ -127,4 +113,3 @@ class TagView(ListView):
     def get_queryset(self):
         t = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
         return super(TagView, self).get_queryset().filter(tag=t)
-

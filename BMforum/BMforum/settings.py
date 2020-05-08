@@ -38,10 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'forum',
-    'comments',
     'users',
-    'DjangoUeditor',
-
+    'comments.apps.CommentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,7 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 #其他设置
 AUTH_USER_MODEL = 'users.User'
