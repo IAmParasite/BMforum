@@ -1,95 +1,33 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>书籍影视交流平台</title>
 
-    <!-- meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- css -->
-
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="{% static 'forum/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'forum/css/pace.css' %}">
-    <link rel="stylesheet" href="{% static 'forum/css/custom.css' %}">
-
-    <!-- js -->
-    <script src="{% static 'forum/js/jquery-2.1.3.min.js' %}"></script>
-    <script src="{% static 'forum/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'forum/js/pace.min.js' %}"></script>
-    <script src="{% static 'forum/js/modernizr.custom.js' %}"></script>
-</head>
-
-<body>
-<div class="container">
-    <header id="site-header">
-        <div class="row">
-            <div class="col-md-4 col-sm-5 col-xs-8">
-                <div class="logo">
-                    <h1><a href="index.html"><b>书籍影视</b>交流平台</a></h1>
-                </div>
-            </div><!-- col-md-4 -->
-            <div class="col-md-8 col-sm-7 col-xs-4">
-                <nav class="main-nav" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" id="trigger-overlay" class="navbar-toggle">
-                            <span class="ion-navicon"></span>
-                        </button>
-                    </div>
-
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href="index.html" data-hover="首页">首页</a></li>
-                            <li class="cl-effect-11"><a href="full-width.html" data-hover="书籍">书籍</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="影视">影视</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="小组">小组</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="话题">话题</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </nav>
-                <div id="header-search-box">
-                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
-                    <div id="search-form" class="search-form">
-                        <form role="search" method="get" id="searchform" action="#">
-                            <input type="search" placeholder="搜索" required>
-                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
-                        </form>
-                    </div>
-                </div>
-            </div><!-- col-md-8 -->
-        </div>
-    </header>
-</div>
-
-<div class="content-body">
-    <div class="container">
-        <div class="row">
-            <main class="col-md-8">
+{% block main %}
+		{% for post in post_list %}
                 <article class="post post-1">
                     <header class="entry-header">
                         <h1 class="entry-title">
-                            <a href="single.html">热门书籍</a>
-                        </h1>
+							<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+						</h1>
                         <div class="entry-meta">
-                            <span class="post-category"><a href="#">科幻</a></span>
+                            <span class="post-category"><a href="#">Django 博客教程</a></span>
                             <span class="post-date"><a href="#"><time class="entry-date"
                                                                       datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-                            <span class="post-author"><a href="#">雨果</a></span>
-                            <span class="comments-link"><a href="#">999 评论</a></span>
-                            <span class="views-count"><a href="#">999 阅读</a></span>
+                            <span class="post-author"><a href="#">追梦人物</a></span>
+                            <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">xx 评论</a></span>
+                            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
                         </div>
                     </header>
                     <div class="entry-content clearfix">
-                        <p>这是一本好书</p>
+                        <p>{{ post.excerpt }}...</p>
                         <div class="read-more cl-effect-14">
-                            <a href="#" class="more-link">继续阅读...<span class="meta-nav">→</span></a>
+                            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                         </div>
                     </div>
                 </article>
+		{% empty %}
+		<div class="no-post">暂时还没有发布的文章！</div>
+		{% endfor %}
 
-                
                 <!-- 简单分页效果
                 <div class="pagination-simple">
                     <a href="#">上一页</a>
@@ -97,82 +35,19 @@
                     <a href="#">下一页</a>
                 </div>
                 -->
-                <div class="pagination">
-                    <ul>
-                        <li><a href="">1</a></li>
-                        <li><a href="">...</a></li>
-                        <li><a href="">4</a></li>
-                        <li><a href="">5</a></li>
-                        <li class="current"><a href="">6</a></li>
-                        <li><a href="">7</a></li>
-                        <li><a href="">8</a></li>
-                        <li><a href="">...</a></li>
-                        <li><a href="">11</a></li>
-                    </ul>
-                </div>
-            </main>
-            <aside class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                           <a href="{% url 'login' %}?next={{ request.path }}">登录</ a>
-                          <a href="{% url 'users:register' %}">注册</a>
-                        </h3>
-                    </div>
-                </div>
-                <div class="widget widget-recent-posts">
-                    <h3 class="widget-title">最新</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django 博客开发入门教程：前言</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="widget widget-archives">
-                    <h3 class="widget-title">归档</h3>
-                    <ul>
-                        <li>
-                            <a href="#">2017 年 5 月</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-
-                <div class="widget widget-category">
-                    <h3 class="widget-title">分类</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="widget widget-tag-cloud">
-                    <h3 class="widget-title">标签云</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-            </aside>
-        </div>
-    </div>
-</div>
-<footer id="site-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="copyright">&copy 2020 BUAA 软件学院
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<script src="{% static 'forum/js/script.js' %}"></script>
-
-</body>
-</html>
+        {% if is_paginated %}
+					<div class="pagination-simple">
+					  <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+					  {% if page_obj.has_previous %}
+						<a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+					  {% endif %}
+					  <!-- 显示当前页面信息 -->
+					  <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
+					  <!-- 如果当前页还有下一页，显示一个下一页的按钮 -->
+					  {% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}">下一页</a>
+					  {% endif %}
+					</div>
+		{% endif %}
+{% endblock main %}
+            
