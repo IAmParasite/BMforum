@@ -98,7 +98,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('forum:detail', kwargs={'pk': self.pk})
+        return reverse('forum:book_detail', kwargs={'pk': self.pk})
     
 def generate_rich_content(value):
     md = markdown.Markdown(

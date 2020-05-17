@@ -32,13 +32,36 @@ def register(request):
         rf=UserCreationForm()
     content = {'注册表单': rf}
     return render(request,'forum/register.html',content)
-    
+
 class IndexView(ListView):
     model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
     template_name = 'forum/index.html'
     context_object_name = 'post_list'
+    paginate_by = 10
+
+class BooksIndexView(ListView):
+    model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 这里其实应该命名为Books
+    template_name = 'forum/books_index.html'    
+    context_object_name = 'books_list'
     #paginate_by = 10
 
+#class MoviesIndexView(ListView):
+    #model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+    #template_name = 'forum/books_index.html'
+    #context_object_name = 'post_list'
+    #paginate_by = 10
+
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
+
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
 
 # 记得在顶部导入 DetailView
 class PostDetailView(DetailView):
