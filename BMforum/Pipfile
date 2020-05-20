@@ -6,11 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django-bootstrap3 = "*"
-markdown = "*"
-django-pure-pagination = "*"
-Django = "==2.2.3"
-Pillow = "*"
+django = "==2.2.3"
+django-comtrib = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
