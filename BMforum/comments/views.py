@@ -1,4 +1,4 @@
-from forum.models import Post
+from forum.models import Post,MoviePost
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
  
@@ -42,3 +42,4 @@ def comment(request, post_pk):
     }
     messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
     return render(request, 'comments/preview.html', context=context)
+

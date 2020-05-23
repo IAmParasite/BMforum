@@ -20,3 +20,4 @@ def show_comments(context, post):
         'comment_count': comment_count,
         'comment_list': comment_list,
     }
+

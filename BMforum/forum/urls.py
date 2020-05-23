@@ -10,6 +10,7 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     #path('groups/', views.MoviesIndexView.as_view(), name='groups'),
     #path('groups/', views.TopicIndexView.as_view(), name='topic'),
     path('books/<int:pk>/', views.PostDetailView.as_view(), name='book_detail'),
+    path('movies/<int:pk>/', views.MoviePostDetailView.as_view(), name='movie_detail'),
     #path('archives/<int:year>/<int:month>/', views.archive, name='archive'),
     #path('categories/<int:pk>/', views.CategoryView.as_view(), name='category'),
     #path('tag/<int:pk>/', views.TagView.as_view(), name='tag'),
