@@ -15,5 +15,7 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     #path('tag/<int:pk>/', views.TagView.as_view(), name='tag'),
     #path('search/', views.search, name='search'),
     #path('login/', views.login, name='login'),
+    path('topic_index/', views.TopicIndexView.as_view(), name='topic_index'),
+    path('topic/<int:pk>/', views.TopicDetailView.as_view(), name='topic_detail'),
     path('register/', views.register, name='register'),
 ]
