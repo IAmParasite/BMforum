@@ -9,6 +9,8 @@ verify_ssl = true
 django = "==2.2.3"
 django-comtrib = "*"
 pillow = "*"
+django-bootstrap3 = "*"
+markdown = "*"
 
 [requires]
 python_version = "3.7"
