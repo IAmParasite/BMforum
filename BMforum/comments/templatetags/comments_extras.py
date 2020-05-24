@@ -1,9 +1,8 @@
 from django import template
-from ..forms import CommentForm
+from ..forms import CommentForm,CommentForm2
  
 register = template.Library()
- 
- 
+
 @register.inclusion_tag('comments/inclusions/_form.html', takes_context=True)
 def show_comment_form(context, post, form=None):
     if form is None:
@@ -20,3 +19,22 @@ def show_comments(context, post):
         'comment_count': comment_count,
         'comment_list': comment_list,
     }
+
+@register.inclusion_tag('comments/inclusions/__form.html', takes_context=True)
+def show_comment_form(context, movie, form=None):
+    if form is None:
+        form = CommentForm2()
+    return {
+        'form': form,
+        'movie': movie,
+    }
+
+@register.inclusion_tag('comments/inclusions/__list.html', takes_context=True)
+def show_comments(context, movie):
+    comment_list = movie.comment_set.all().order_by('-created_time')
+    comment_count = comment_list.count()
+    return {
+        'comment_count': comment_count,
+        'comment_list': comment_list,
+    }
+

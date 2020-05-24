@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
-from .models import Post, Category, Tag
+from .models import Post,MoviePost,Category,Tag
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -45,24 +45,6 @@ class BooksIndexView(ListView):
     context_object_name = 'books_list'
     #paginate_by = 10
 
-#class MoviesIndexView(ListView):
-    #model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-    #template_name = 'forum/books_index.html'
-    #context_object_name = 'post_list'
-    #paginate_by = 10
-
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
-
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
-
 # 记得在顶部导入 DetailView
 class PostDetailView(DetailView):
     # 这些属性的含义和 ListView 是一样的
@@ -97,6 +79,45 @@ class PostDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
+
+class MoviesIndexView(ListView):
+    model = MoviePost        ## 告诉 django 我们要取的数据库模型是class Post, 
+    template_name = 'forum/movies_index.html'
+    context_object_name = 'movies_list'
+    #paginate_by = 10
+
+class MoviePostDetailView(DetailView):
+    model = MoviePost 
+    template_name = 'forum/movie_detail.html'
+    context_object_name = 'movie_post'
+    def get(self, request, *args, **kwargs):
+        response = super(MoviePostDetailView, self).get(request, *args, **kwargs)
+        self.object.increase_views()
+        return response
+    def get_object(self, queryset=None):
+        movie = super().get_object(queryset=None)
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            TocExtension(slugify=slugify),
+        ])
+        movie.body = md.convert(movie.body)
+        m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+        movie.toc = m.group(1) if m is not None else ''
+        return movie
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
+
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
+
+
 
 
 def archive(request, year, month):
