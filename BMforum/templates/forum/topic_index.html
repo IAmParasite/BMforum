@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+		{% for topic in topic_list %}
+                <article class="post post-1">
+                    <header class="entry-header">
+
+                        <h1 class="entry-title">
+                            <a href="{{ topic.get_absolute_url_topic }}">{{ topic.title }}</a>
+
+                        </h1>
+                        <button class="ExploreFollowButton">+关注话题</button>
+                        <div class="entry-meta">
+                            <span class="post-category">热度 1000</span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                            <span class="post-author">这个话题说的大概是……</span>
+
+                        </div>
+                    </header>
+
+                </article>
+		{% empty %}
+		<div class="no-post">暂时还没有发布的文章！</div>
+		{% endfor %}
+
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+        {% if is_paginated %}
+					<div class="pagination-simple">
+					  <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+					  {% if page_obj.has_previous %}
+						<a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+					  {% endif %}
+					  <!-- 显示当前页面信息 -->
+					  <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
+					  <!-- 如果当前页还有下一页，显示一个下一页的按钮 -->
+					  {% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}">下一页</a>
+					  {% endif %}
+					</div>
+		{% endif %}
+{% endblock main %}
+            
