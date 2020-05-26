@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load movie_comments_extras %}
+
+{% block main %}
+                <article class="movie_post movie_post-{{ movie_post.pk}}">
+                    <header class="entry-header">
+                        <h1 class="entry-title">{{ movie_post.title }}</h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">{{ movie_post.category.name}}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="{{ movie_post.created_time}}">{{ post.created_time}}</time></a></span>
+                            <span class="post-author"><a href="#">{{ movie_post.author }}</a></span>
+                            <span class="comments-link"><a href="#comment-area">4 评论</a></span>
+                            <span class="views-count"><a href="#">{{ movie_post.views }} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        {{ movie_post.body|safe }}
+                        <h3>发表评论</h3>
+                        {% show_comment_form movie_post %}
+                        <div class="comment-list-panel">
+                            {% show_comments movie_post %}
+                        </div>
+                    </div>
+                </article>
+                
+{% endblock main %}
+ 

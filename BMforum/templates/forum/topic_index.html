@@ -2,30 +2,30 @@
 {% load static %}
 
 {% block main %}
-		{% for book in books_list %}
+		{% for topic in topic_list %}
                 <article class="post post-1">
                     <header class="entry-header">
                         <h1 class="entry-title">
-							<a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+							<a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a>
 						</h1>
                         <div class="entry-meta">
                             <span class="post-category"><a href="#">Django 博客教程</a></span>
                             <span class="post-date"><a href="#"><time class="entry-date"
                                                                       datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-                            <span class="post-author"><a href="#">追梦人物</a></span>
-                            <span class="comments-link"><a href="{{ book.get_absolute_url }}#comment-area">xx 评论</a></span>
-                            <span class="views-count"><a href="{{ book.get_absolute_url }}">{{ book.views }} 阅读</a></span>
+
+                            <span class="comments-link"><a href="{{ topic.get_absolute_url }}#comment-area">xx 评论</a></span>
+
                         </div>
                     </header>
                     <div class="entry-content clearfix">
-                        <p>{{ book.excerpt }}...</p>
+                        <p>{{ topic.excerpt }}...</p>
                         <div class="read-more cl-effect-14">
-                            <a href="{{ book.get_absolute_url }}" class="more-link">继续查看图书内容<span class="meta-nav">→</span></a>
+                            <a href="{{ topic.get_absolute_url }}" class="more-link">继续查看话题内容<span class="meta-nav">→</span></a>
                         </div>
                     </div>
                 </article>
 		{% empty %}
-		<div class="no-post">暂时还没有发布的文章！</div>
+		<div class="no-post">暂时还没有发布的话题！</div>
 		{% endfor %}
 
                 <!-- 简单分页效果
