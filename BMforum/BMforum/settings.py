@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'forum',
     'users',
     'comments.apps.CommentsConfig',
-    'movie_comments.apps.MovieCommentsConfig',
-    'TopicDiscuss.apps.TopicDiscussConfig',
 ]
 
 MIDDLEWARE = [

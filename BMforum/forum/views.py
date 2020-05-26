@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
 from .models import Post, Category, Tag,Group,MemberShip,GroupPost
 from django.views.generic import ListView, DetailView
-from django.core.paginator import Paginatornna
+from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import HttpResponse
 
@@ -44,6 +44,24 @@ class BooksIndexView(ListView):
     template_name = 'forum/books_index.html'    
     context_object_name = 'books_list'
     #paginate_by = 10
+
+#class MoviesIndexView(ListView):
+    #model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+    #template_name = 'forum/books_index.html'
+    #context_object_name = 'post_list'
+    #paginate_by = 10
+
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
+
+#class TopicIndexView(ListView):
+#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+#  template_name = 'forum/books_index.html'
+#    context_object_name = 'post_list'
+#    #paginate_by = 10
 
 # 记得在顶部导入 DetailView
 class PostDetailView(DetailView):
@@ -130,25 +148,11 @@ class GroupDetailView(DetailView):
 
     def get_object(self, queryset=None):
         # 覆写 get_object 方法的目的是因为需要对 post 的 body 值进行渲染
-
-class MoviesIndexView(ListView):
-    model = MoviePost        ## 告诉 django 我们要取的数据库模型是class Post, 
-    template_name = 'forum/movies_index.html'
-    context_object_name = 'movies_list'
-    #paginate_by = 10
-class MoviePostDetailView(DetailView):
-    model = MoviePost 
-    template_name = 'forum/movie_detail.html'
-    context_object_name = 'movie_post'
-    def get(self, request, *args, **kwargs):
-        response = super(MoviePostDetailView, self).get(request, *args, **kwargs)
-        self.object.increase_views()
-        return response
-    def get_object(self, queryset=None):
         post = super().get_object(queryset=None)
         md = markdown.Markdown(extensions=[
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
+            # 记得在顶部引入 TocExtension 和 slugify
             TocExtension(slugify=slugify),
         ])
         post.body = md.convert(post.body)
@@ -179,47 +183,22 @@ class PostDetailView(DetailView):
 
     def get_object(self, queryset=None):
         # 覆写 get_object 方法的目的是因为需要对 post 的 body 值进行渲染
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
-
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
-class TopicIndexView(ListView):
-    model = TopicPost        ## 告诉 django 我们要取的数据库模型是class Post,
-    template_name = 'forum/topic_index.html'
-    context_object_name = 'topic_list'
-    #paginate_by = 10
-class TopicPostDetailView(DetailView):
-    model = TopicPost
-    template_name = 'forum/topic_detail.html'
-    context_object_name = 'topic_post'
-    def get(self, request, *args, **kwargs):
-        response = super(TopicPostDetailView, self).get(request, *args, **kwargs)
-        # self.object.increase_views()
-        return response
-    def get_object(self, queryset=None):
         post = super().get_object(queryset=None)
         md = markdown.Markdown(extensions=[
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
+            # 记得在顶部引入 TocExtension 和 slugify
             TocExtension(slugify=slugify),
         ])
         post.body = md.convert(post.body)
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
-
-def archive(request, year, month):
-    post_list = Post.objects.filter(created_time__year=year,
-                                    created_time__month=month
-                                    ).order_by('-created_time')
-    return render(request, 'blog/index.html', context={'post_list': post_list})
+    def archive(request, year, month):
+        post_list = Post.objects.filter(created_time__year=year,
+                                        created_time__month=month
+                                        ).order_by('-created_time')
+        return render(request, 'blog/index.html', context={'post_list': post_list})
 
 
 def search(request):
