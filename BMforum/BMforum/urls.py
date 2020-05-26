@@ -22,4 +22,6 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
     path('', include('comments.urls')),
+    path('', include('movie_comments.urls')),
+    path('', include('TopicDiscuss.urls')),
 ]

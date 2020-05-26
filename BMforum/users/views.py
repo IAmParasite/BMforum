@@ -21,7 +21,7 @@ def register(request):
             if redirect_to:
                 return redirect(redirect_to)
             else:
-                return redirect('/')
+                return redirect('/index')
             # 注册成功，跳转回首页
     else:
         # 请求不是 POST，表明用户正在访问注册页面，展示一个空的注册表单给用户
