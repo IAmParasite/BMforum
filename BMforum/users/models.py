@@ -15,6 +15,6 @@ class User(AbstractUser):
     sex = models.CharField(max_length=1,choices=SEX_CHOICES,verbose_name='性别',default=1)
     phone = models.CharField(max_length=20,blank=True,verbose_name='电话')
     avatar = models.ImageField(blank=True, upload_to='images/',default='images/1.jpg',verbose_name='头像')
-    signature = models.CharField(max_length=128, default='This guy is too lazy to leave anything here!')
+    signature = models.CharField(max_length=128, default='This guy is too lazy to leave anything here!',verbose_name='签名')
 class Meta(AbstractUser.Meta):
         managed = False
