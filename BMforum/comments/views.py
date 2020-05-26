@@ -21,13 +21,14 @@ def comment(request, post_pk):
         # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
         # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
         comment = form.save(commit=False)
- 
+        print(comment)
+        
         # 将评论和被评论的文章关联起来。
         comment.post = post
- 
+        comment.name = request.user
         # 最终将评论数据保存进数据库，调用模型实例的 save 方法
         comment.save()
- 
+        post.save()
         # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
         # 然后重定向到 get_absolute_url 方法返回的 URL。
         messages.add_message(request, messages.SUCCESS, '评论发表成功！', extra_tags='success')
