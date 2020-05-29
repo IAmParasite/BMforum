@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from users.models import User
- 
+from django.urls import reverse
 class Comment(models.Model):
     name = models.CharField('名字', max_length=50)
     #name = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -16,5 +16,7 @@ class Comment(models.Model):
     def __str__(self):
         return '{}: {}'.format(self.name, self.text[:20])
 
+    def get_absolute_url(self):
+        return reverse('forum:book_detail', kwargs={'pk': self.pk})
 
 

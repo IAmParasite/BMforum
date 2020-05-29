@@ -51,9 +51,9 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="cl-effect-11"><a href= {% url 'forum:index' %} data-hover="首页">首页</a></li>
                             <li class="cl-effect-11"><a href= {% url 'forum:book_index' %} data-hover="书籍">书籍</a></li>
+                            <li class="cl-effect-11"><a href={% url 'forum:groups_index' %} data-hover="小组">小组</a></li>
                             <li class="cl-effect-11"><a href={% url 'forum:movie_index' %} data-hover="影视">影视</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="小组">小组</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="话题">话题</a></li>
+                            <li class="cl-effect-11"><a href={% url 'forum:topic_index' %} data-hover="话题">话题</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </nav>
