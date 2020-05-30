@@ -16,10 +16,89 @@
     <link rel="stylesheet" href="{% static 'forum/css/custom.css' %}">
 
     <!-- js -->
-    <script src="{% static 'forum/js/jquery-2.1.3.min.js' %}"></script>
+    <script src="{% static 'forum/js/jquery-2.1.1.min.js' %}"></script>
     <script src="{% static 'forum/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'forum/js/pace.min.js' %}"></script>
     <script src="{% static 'forum/js/modernizr.custom.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajaxSetup({
+               data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+           });       
+                 $(".collect2").click(function(){
+                     console.log("进入Ajax")
+               $(this).children().css({"color":"pink"})
+                 $(this).css({"color":"pink"})
+              var contend_id = $(this).attr("content_id2");
+              console.log(contend_id)
+                $.ajax({
+                    url: "/like/",
+                    type: "POST",
+                    data:{ contend_id : contend_id }
+               }).done(function (data) {
+                   alert(data.status)
+                    console.log(data.status)
+               }).fail(function () {
+                   alert('fail');
+               });
+             });
+
+                 $(".collect3").click(function(){
+               $(this).children().css({"color":"pink"})
+                 $(this).css({"color":"pink"})
+              var contend_id=$(this).attr("content_id3");
+              console.log(contend_id)
+                $.ajax({
+                   url: "/dislike/",
+                    type:"POST",
+                    data:{contend_id:contend_id}
+               }).done(function (data) {
+                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                   alert(data.status)
+                    console.log(data.status)
+               }).fail(function () {
+                   alert('fail');
+               });
+             });
+
+             $(".collect4").click(function(){
+               $(this).children().css({"color":"pink"})
+                 $(this).css({"color":"pink"})
+              var contend_id=$(this).attr("content_id4");
+              console.log(contend_id)
+                $.ajax({
+                   url: "/movielike/",
+                    type:"POST",
+                    data:{contend_id : contend_id}
+               }).done(function (data) {
+                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                   alert(data.status)
+                    console.log(data.status)
+               }).fail(function () {
+                   alert('fail');
+               });
+             });
+
+             $(".collect5").click(function(){
+               $(this).children().css({"color":"pink"})
+                 $(this).css({"color":"pink"})
+              var contend_id=$(this).attr("content_id5");
+              console.log(contend_id)
+                $.ajax({
+                   url: "/moviedislike/",
+                    type:"POST",
+                    data:{contend_id : contend_id}
+               }).done(function (data) {
+                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                   alert(data.status)
+                    console.log(data.status)
+               }).fail(function () {
+                   alert('fail');
+               });
+             });
+                
+           });
+       </script>
 </head>
 {% if messages %}
     {% for message in messages %}
@@ -51,9 +130,9 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="cl-effect-11"><a href= {% url 'forum:index' %} data-hover="首页">首页</a></li>
                             <li class="cl-effect-11"><a href= {% url 'forum:book_index' %} data-hover="书籍">书籍</a></li>
+                            <li class="cl-effect-11"><a href={% url 'forum:groups_index' %} data-hover="小组">小组</a></li>
                             <li class="cl-effect-11"><a href={% url 'forum:movie_index' %} data-hover="影视">影视</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="小组">小组</a></li>
-                            <li class="cl-effect-11"><a href="" data-hover="话题">话题</a></li>
+                            <li class="cl-effect-11"><a href={% url 'forum:topic_index' %} data-hover="话题">话题</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </nav>
@@ -76,30 +155,7 @@
         <div class="row">
             <main class="col-md-8">
 				{% block main %}
-				
 				{% endblock main %}
-     	
-		
-                <!-- 简单分页效果
-                <div class="pagination-simple">
-                    <a href="#">上一页</a>
-                    <span class="current">第 6 页 / 共 11 页</span>
-                    <a href="#">下一页</a>
-                </div>
-                -->
-                <div class="pagination">
-                    <ul>
-                        <li><a href="">1</a></li>
-                        <li><a href="">...</a></li>
-                        <li><a href="">4</a></li>
-                        <li><a href="">5</a></li>
-                        <li class="current"><a href="">6</a></li>
-                        <li><a href="">7</a></li>
-                        <li><a href="">8</a></li>
-                        <li><a href="">...</a></li>
-                        <li><a href="">11</a></li>
-                    </ul>
-                </div>
             </main>
             <aside class="col-md-4">
 			{% if request.user.is_authenticated %}

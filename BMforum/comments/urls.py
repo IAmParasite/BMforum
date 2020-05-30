@@ -1,7 +1,10 @@
 from django.urls import path
 from . import views
+from django.conf.urls import url
+
 app_name = 'comments'
 urlpatterns = [
     path('comment/<int:post_pk>', views.comment, name='comment'),
-    path('moviecomment/<int:movie_pk>', views.moviecomment, name='moviecomment'),
+    path('like/', views.add_like, name = 'like'),
+    path('dislike/', views.add_dislike, name = 'dislike'),
 ]
