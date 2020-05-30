@@ -2,6 +2,7 @@
 <h3>评论列表，共 <span>{{ comment_count }}</span> 条评论</h3>
 <ul class="comment-list list-unstyled">
   {% for comment in comment_list %}
+    <article>
     <li class="comment-item">
       <span class="nickname">{{ comment.name }}</span>
       <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
@@ -9,10 +10,7 @@
         {{ comment.text|linebreaks }}
       </div>
     </li>
-    <div>
-      <h4><strong><font color="grey">对评论发表举报：</font></strong></h4>
-      {% show_movie_report_form comment %}
-    </div>
+
     <div> 
       <a class="collect4" href="javascript:" content_id4 ="{{ comment.id }}">
         <span class="glyphicon glyphicon-thumbs-up"> </span>
@@ -22,6 +20,11 @@
         <span class="glyphicon glyphicon-thumbs-up"> </span>
         {{ article.poll_num }} 反对 ({{ comment.dislike_num }})
       </a>
+    </div>
+
+    <div>
+      <h4><strong><font color="grey">对评论发表举报：</font></strong> </h4>
+      {% show_movie_report_form comment %}
     </div>
   </article>
   {% empty %}

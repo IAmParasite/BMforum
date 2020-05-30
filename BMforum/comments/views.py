@@ -52,12 +52,13 @@ def add_like(request):
         user = request.user
         contentid = request.POST.getlist('contend_id')
         # contentid = request.POST.get('contend_id')
-        Commentt = Comment.objects.get(id = contentid[0])
+        Commentt = Comment.objects.get(id = contentid[0])       # 获取
         created_time = datetime.datetime.now()
-        comment_id = Like.objects.filter(comment_id = Commentt)
+        comment_id = Like.objects.filter(comment_id = Commentt, user_id = request.user.id)
+        print(comment_id)
         if comment_id.exists():
             resp = {'status': '已经点赞'}
-            return HttpResponse(json.dumps(resp), content_type="application/json")
+            return HttpResponse(json.dumps(resp), content_type = "application/json")
         else:
             Commentt.like_num +=1
             Commentt.save()
@@ -73,7 +74,7 @@ def add_dislike(request):
         # contentid = request.POST.get('contend_id')
         Commentt = Comment.objects.get(id = contentid[0])
         created_time = datetime.datetime.now()
-        comment_id = Dislike.objects.filter(comment_id = Commentt)
+        comment_id = Dislike.objects.filter(comment_id = Commentt, user_id = request.user.id)
         if comment_id.exists():
             resp = {'status': '已经反对'}
             return HttpResponse(json.dumps(resp), content_type = "application/json")
