@@ -25,7 +25,7 @@ SECRET_KEY = 'c(1l*v$xrf(-qf7_3_93q0u@h)a!tn*u_$-!m+%gzz=08^06q*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
     'movie_comments.apps.MovieCommentsConfig',
     'TopicDiscuss.apps.TopicDiscussConfig',
+    'reports.apps.ReportsConfig',
+    'movie_reports.apps.MovieReportsConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BMforum.wsgi.application'
 
-
+APPEND_SLASH=False
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -117,6 +119,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)

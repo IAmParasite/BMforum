@@ -1,0 +1,20 @@
+<form action="{% url 'movie_reports:movie_report' post.pk %}" method="post" class="comment-form">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-4">
+      <label for="{{ form.title.id_for_label }}">
+        <h4>{{ form.title.label }}：</h4>
+      </label>
+      {{ form.title }}
+      {{ form.title.errors }}
+    </div>
+    <div class="col-md-12">
+      <label for="{{ form.text.id_for_label }}">
+        <h4>{{ form.text.label }}：</h4>
+      </label>
+      {{ form.text }}
+      {{ form.text.errors }}
+      <button type="submit" class="comment-btn">发表举报</button>
+    </div>
+  </div> <!-- row -->
+</form>
