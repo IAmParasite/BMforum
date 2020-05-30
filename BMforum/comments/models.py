@@ -16,7 +16,4 @@ class Comment(models.Model):
     def __str__(self):
         return '{}: {}'.format(self.name, self.text[:20])
 
-    def get_absolute_url(self):
-        return reverse('forum:book_detail', kwargs={'pk': self.pk})
-
 
