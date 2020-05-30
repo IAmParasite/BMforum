@@ -1,9 +1,12 @@
 from forum.models import Post
-from django.shortcuts import get_object_or_404, redirect, render
+from .models import Comment, Like, Dislike
+from django.shortcuts import render,get_object_or_404,render_to_response,HttpResponse, redirect
 from django.views.decorators.http import require_POST
- 
+from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
 from django.contrib import messages
+import json
+import datetime
  
 @require_POST
 def comment(request, post_pk):
@@ -42,3 +45,41 @@ def comment(request, post_pk):
     }
     messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
     return render(request, 'comments/preview.html', context=context)
+
+def add_like(request):
+    print("add_like launch")
+    if request.is_ajax():
+        user = request.user
+        contentid = request.POST.getlist('contend_id')
+        # contentid = request.POST.get('contend_id')
+        Commentt = Comment.objects.get(id = contentid[0])
+        created_time = datetime.datetime.now()
+        comment_id = Like.objects.filter(comment_id = Commentt)
+        if comment_id.exists():
+            resp = {'status': '已经点赞'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+        else:
+            Commentt.like_num +=1
+            Commentt.save()
+            Like.objects.update_or_create(user=user, comment = Commentt, created_time = created_time)
+            resp = {'errorcode': 100, 'status': '成功点赞'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+
+def add_dislike(request):
+    print("dislike")
+    if request.is_ajax():
+        user = request.user
+        contentid = request.POST.getlist('contend_id')
+        # contentid = request.POST.get('contend_id')
+        Commentt = Comment.objects.get(id = contentid[0])
+        created_time = datetime.datetime.now()
+        comment_id = Dislike.objects.filter(comment_id = Commentt)
+        if comment_id.exists():
+            resp = {'status': '已经反对'}
+            return HttpResponse(json.dumps(resp), content_type = "application/json")
+        else:
+            Commentt.dislike_num += 1
+            Commentt.save()
+            Dislike.objects.update_or_create(user = user, comment = Commentt, created_time = created_time)
+            resp = {'errorcode': 100, 'status': '成功反对'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
