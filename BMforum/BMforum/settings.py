@@ -40,9 +40,6 @@ INSTALLED_APPS = [
     'forum',
     'users',
     'comments.apps.CommentsConfig',
-    'movie_comments.apps.MovieCommentsConfig',
-    'TopicDiscuss.apps.TopicDiscussConfig',
-    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -59,9 +56,7 @@ ROOT_URLCONF = 'BMforum.urls'
 
 TEMPLATES = [
     {
-        'BACKEND':
-                'django.template.backends.django.DjangoTemplates',                    
-                
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,12 +124,11 @@ STATIC_URL = '/static/'
 
 #其他设置
 AUTH_USER_MODEL = 'users.User'
-ANONYMOUS_USER_ID=-1
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    
-    'guardian.backends.ObjectPermissionBackend',
-)
+
+#AUTHENTICATION_BACKENDS = (
+    #'django.contrib.auth.backends.ModelBackend',
+    #'users.backends.EmailBackend',
+#)
 
 LOGOUT_REDIRECT_URL = '/index/'
 LOGIN_REDIRECT_URL = '/index/'

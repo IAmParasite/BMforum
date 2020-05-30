@@ -28,7 +28,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-
 class Group(models.Model):
     name = models.CharField(max_length=100,unique=True)
     created_time = models.DateTimeField('创建时间', default=timezone.now)
@@ -41,15 +40,12 @@ class Group(models.Model):
         return self.name
     def get_absolute_url(self):
         return reverse('forum:group_detail', kwargs={'pk': self.pk})
-    def get_group(self):
-        return reverse('forum:group_detail', kwargs={'pk': self.pk})
 class MemberShip(models.Model):
     person = models.ForeignKey(User,on_delete=models.CASCADE)
     group = models.ForeignKey(Group,on_delete=models.CASCADE)
     date_join = models.DateTimeField()
     class Meta():
         verbose_name = '小组关系'
-
 class GroupPost(models.Model):
 
    title = models.CharField('标题', max_length=70)
@@ -78,9 +74,6 @@ class GroupPost(models.Model):
        verbose_name = '小组讨论'
        verbose_name_plural = verbose_name
        ordering = ['-created_time']
-       default_permissions = ()
-       permissions = (
-                  ("grouppost_delete", "讨论删除权限"),)
    def __str__(self):
        return self.title
    def get_absolute_url(self):
@@ -148,7 +141,7 @@ class Post(models.Model):
         self.save(update_fields=['views'])
 
     class Meta:
-        verbose_name = '书籍'
+        verbose_name = '文章'
         verbose_name_plural = verbose_name
         ordering = ['-created_time']
 
@@ -157,63 +150,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('forum:book_detail', kwargs={'pk': self.pk})
-
-class MoviePost(models.Model):
-    title = models.CharField('影片', max_length=70)
-    body = models.TextField()
-    created_time = models.DateTimeField('创建时间', default=timezone.now)
-    modified_time = models.DateTimeField('修改时间')
-    excerpt = models.CharField(max_length=200, blank=True)
-    category = models.ForeignKey(Category,verbose_name='分类',on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, verbose_name='标签', blank=True)
-    author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
-    views = models.PositiveIntegerField(default=0, editable=False)
-    def save(self, *args, **kwargs):
-        self.modified_time = timezone.now()
-        md = markdown.Markdown(extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-        ])
-        self.excerpt = strip_tags(md.convert(self.body))[:54]
-        super().save(*args, **kwargs)
-    def increase_views(self):
-        self.views += 1
-        self.save(update_fields=['views'])
-    class Meta:
-        verbose_name = '影视'
-        verbose_name_plural = verbose_name
-        ordering = ['-created_time']
-    def __str__(self):
-        return self.title
-    def get_absolute_url(self):
-        return reverse('forum:movie_detail', kwargs={'pk': self.pk})
-
-class TopicPost(models.Model):
-    title = models.CharField('话题', max_length=70)
-    body = models.TextField()
-    created_time = models.DateTimeField('创建时间', default=timezone.now)
-    modified_time = models.DateTimeField('修改时间')
-    excerpt = models.CharField(max_length=200, blank=True)
-
-    views = models.PositiveIntegerField(default=0, editable=False)
-    def save(self, *args, **kwargs):
-        self.modified_time = timezone.now()
-        md = markdown.Markdown(extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-        ])
-        self.excerpt = strip_tags(md.convert(self.body))[:54]
-        super().save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = '话题'
-        verbose_name_plural = verbose_name
-        ordering = ['-created_time']
-    def __str__(self):
-        return self.title
-    def get_absolute_url(self):
-        return reverse('forum:topic_detail', kwargs={'pk': self.pk})
-
+    
 def generate_rich_content(value):
     md = markdown.Markdown(
         extensions=[
