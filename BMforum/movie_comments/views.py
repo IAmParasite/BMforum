@@ -46,21 +46,20 @@ def comment(request, post_pk):
     return render(request, 'movie_comments/preview.html', context=context)
 
 def add_like(request):
-    print("add_like launch")
     if request.is_ajax():
         user = request.user
+        print(user)
         contentid = request.POST.getlist('contend_id')
-        # contentid = request.POST.get('contend_id')
         Commentt = MovieComment.objects.get(id = contentid[0])
         created_time = datetime.datetime.now()
-        comment_id = MovieLike.objects.filter(comment_id = Commentt)
+        comment_id = MovieLike.objects.filter(comment_id = Commentt, user_id = request.user.id)
         if comment_id.exists():
             resp = {'status': '已经点赞'}
             return HttpResponse(json.dumps(resp), content_type="application/json")
         else:
             Commentt.like_num +=1
             Commentt.save()
-            MovieLike.objects.update_or_create(user=user, comment = Commentt, created_time = created_time)
+            MovieLike.objects.update_or_create(user = user, comment = Commentt, created_time = created_time)
             resp = {'errorcode': 100, 'status': '成功点赞'}
             return HttpResponse(json.dumps(resp), content_type="application/json")
 
@@ -72,7 +71,7 @@ def add_dislike(request):
         # contentid = request.POST.get('contend_id')
         Commentt = MovieComment.objects.get(id = contentid[0])
         created_time = datetime.datetime.now()
-        comment_id = MovieDislike.objects.filter(comment_id = Commentt)
+        comment_id = MovieDislike.objects.filter(comment_id = Commentt, user_id = request.user.id)
         if comment_id.exists():
             resp = {'status': '已经反对'}
             return HttpResponse(json.dumps(resp), content_type = "application/json")

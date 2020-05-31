@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from users.models import User
-
- 
+from django.urls import reverse
 class Comment(models.Model):
     name = models.CharField('名字', max_length=50)
     #name = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -26,7 +25,7 @@ class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add = True,verbose_name='创建时间')
     def __str__(self):
-        return "%s likes comment %s" % (self.user, self.post)
+        return "%s likes comment %s" % (self.user, self.comment)
 
 class Dislike(models.Model):
     "反对"
@@ -34,5 +33,5 @@ class Dislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add = True,verbose_name='创建时间')
     def __str__(self):
-        return "%s likes comment %s" % (self.user, self.post)
+        return "%s likes comment %s" % (self.user, self.comment)
 

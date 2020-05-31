@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
     'movie_comments.apps.MovieCommentsConfig',
     'TopicDiscuss.apps.TopicDiscussConfig',
+    'reports.apps.ReportsConfig',
+    'movie_reports.apps.MovieReportsConfig',
 ]
 
 MIDDLEWARE = [
