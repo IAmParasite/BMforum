@@ -20,4 +20,6 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     #path('search/', views.search, name='search'),
     #path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
+    path('groups_index/<int:pk>', views.add_group, name='addgroup'),
+    path('groups_index/<str:name>', views.add_groupmanager, name='addgroupmanager'),
 ]

@@ -9,7 +9,15 @@ from .models import Post, Category, Tag,Group,MemberShip,GroupPost, MoviePost, T
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import HttpResponse
-
+from django.contrib.auth.models import AbstractUser
+import datetime
+from django.utils import timezone
+from users.models import User
+from django.utils import timezone
+from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
+from guardian.shortcuts import get_users_with_perms
+from guardian.shortcuts import get_objects_for_user
 def login(request):
     if request.method=='POST':
         user = authenticate(request,username=request.POST['用户名'],password=request.POST['密码'])
@@ -79,6 +87,42 @@ class PostDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
+        
+        #添加为小组成员
+def add_group(request,pk):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            
+            group_now  = Group.objects.filter(pk = pk).first()
+            user_now = User.objects.filter(username=request.user.username).first()
+            mm = MemberShip.objects.filter(person=user_now,group=group_now)
+            if not mm:
+                m1=MemberShip.objects.create(person=user_now,group=group_now,date_join=timezone.now())
+            return redirect('forum:groups_index')
+
+        else:
+            return render(request,'registration/login.html',{'错误':'还未登录！'})
+    else:
+        return render(request,'forum/login.html')
+##管理员添加
+def add_groupmanager(request,name):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            
+            group_now  = Group.objects.filter(name = name).first()
+            user_now = User.objects.filter(username=request.user.username).first()
+            gg = GroupPost.objects.filter(group=group_now)
+            if  group_now:
+                for gp in gg:
+                    assign_perm('grouppost_delete',user_now, gp)
+            return redirect('forum:groups_index')
+
+        else:
+            return render(request,'registration/login.html',{'错误':'还未登录！'})
+    else:
+        return render(request,'forum/login.html')
+        
+    
 class GroupsIndexView(ListView):
     model = Group        ## 告诉 django 我们要取的数据库模型是class GroupPost,
     template_name = 'forum/groups_index.html'

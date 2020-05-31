@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-
+{% load guardian_tags %}
 {% block main %}
 {% for group in group_post.all %}
+{% get_obj_perms request.user for group as "grouppost_perms" %}
                 <article class="post post-1">
                     <header class="entry-header">
                         <h1 class="entry-title">
@@ -19,7 +20,11 @@
                     <div class="entry-content clearfix">
                         <p>{{ group.excerpt }}...</p>
                         <div class="read-more cl-effect-14">
-                            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看讨论内容<span class="meta-nav">→</span></a>
+                            {% if "grouppost_delete" in grouppost_perms %}
+                                <a href="#" class="more-link">删除<span class="meta-nav"></span></a>
+                                
+                            {% endif %}
+                            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容<span class="meta-nav">→</span></a>
                         </div>
                     </div>
                 </article>
