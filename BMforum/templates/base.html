@@ -24,7 +24,8 @@
         $(document).ready(function(){
             $.ajaxSetup({
                data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-           });       
+           });      
+            
                  $(".collect2").click(function(){
                      console.log("进入Ajax")
                $(this).children().css({"color":"pink"})
@@ -34,12 +35,12 @@
                 $.ajax({
                     url: "/like/",
                     type: "POST",
-                    data:{ contend_id : contend_id }
+                    data: { contend_id : contend_id}
                }).done(function (data) {
                    alert(data.status)
                     console.log(data.status)
                }).fail(function () {
-                   alert('fail');
+                   alert('请登录');
                });
              });
 
