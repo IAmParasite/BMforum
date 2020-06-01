@@ -9,7 +9,16 @@ from .models import Post, Category, Tag,Group,MemberShip,GroupPost, MoviePost, T
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import HttpResponse
-
+from django.contrib.auth.models import AbstractUser
+import datetime
+from django.utils import timezone
+from users.models import User
+from django.utils import timezone
+from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
+from guardian.shortcuts import get_users_with_perms
+from guardian.shortcuts import get_objects_for_user
+from django.db.models import Q
 def login(request):
     if request.method=='POST':
         user = authenticate(request,username=request.POST['用户名'],password=request.POST['密码'])
@@ -79,6 +88,42 @@ class PostDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
+        
+        #添加为小组成员
+def add_group(request,pk):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            
+            group_now  = Group.objects.filter(pk = pk).first()
+            user_now = User.objects.filter(username=request.user.username).first()
+            mm = MemberShip.objects.filter(person=user_now,group=group_now)
+            if not mm:
+                m1=MemberShip.objects.create(person=user_now,group=group_now,date_join=timezone.now())
+            return redirect('forum:groups_index')
+
+        else:
+            return render(request,'registration/login.html',{'错误':'还未登录！'})
+    else:
+        return render(request,'forum/login.html')
+##管理员添加
+def add_groupmanager(request,name):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            
+            group_now  = Group.objects.filter(name = name).first()
+            user_now = User.objects.filter(username=request.user.username).first()
+            gg = GroupPost.objects.filter(group=group_now)
+            if  group_now:
+                for gp in gg:
+                    assign_perm('grouppost_delete',user_now, gp)
+            return redirect('forum:groups_index')
+
+        else:
+            return render(request,'registration/login.html',{'错误':'还未登录！'})
+    else:
+        return render(request,'forum/login.html')
+        
+    
 class GroupsIndexView(ListView):
     model = Group        ## 告诉 django 我们要取的数据库模型是class GroupPost,
     template_name = 'forum/groups_index.html'
@@ -238,11 +283,65 @@ def search(request):
     if not q:
         error_msg = "请输入搜索关键词"
         messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
-        return redirect('blog:index')
+        return redirect('forum:index')
 
     post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    return render(request, 'forum/index.html', {'post_list': post_list})
 
+def book_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:books_index')
+
+    books_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/books_index.html', {'books_list': books_list})
+
+def movie_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:movies_index')
+
+    movies_list = MoviePost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/movies_index.html', {'movies_list': movies_list})
+
+def group_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:groups_index')
+
+    groups_list = Group.objects.filter(Q(name__icontains=q))
+    return render(request, 'forum/groups_index.html', {'groups_list': groups_list})
+
+def group_post_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:group_detail')
+
+    group_post = GroupPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/group_detail.html', {'group_post': group_post})
+
+def topic_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:topic_index')
+
+    topic_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/topic_index.html', {'topic_list': topic_list})
 
 class CategoryView(ListView):
     model = Post

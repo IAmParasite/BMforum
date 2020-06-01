@@ -25,7 +25,7 @@ SECRET_KEY = 'c(1l*v$xrf(-qf7_3_93q0u@h)a!tn*u_$-!m+%gzz=08^06q*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'TopicDiscuss.apps.TopicDiscussConfig',
     'reports.apps.ReportsConfig',
     'movie_reports.apps.MovieReportsConfig',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,9 @@ ROOT_URLCONF = 'BMforum.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND':
+                'django.template.backends.django.DjangoTemplates',                    
+                
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,7 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BMforum.wsgi.application'
 
-
+APPEND_SLASH=False
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -121,6 +124,8 @@ USE_L10N = True
 USE_TZ = True
 
 
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -133,6 +138,11 @@ AUTH_USER_MODEL = 'users.User'
     #'django.contrib.auth.backends.ModelBackend',
     #'users.backends.EmailBackend',
 #)
+ANONYMOUS_USER_ID = -1
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 LOGOUT_REDIRECT_URL = '/index/'
 LOGIN_REDIRECT_URL = '/index/'

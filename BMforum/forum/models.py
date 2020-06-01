@@ -41,6 +41,9 @@ class Group(models.Model):
         return self.name
     def get_absolute_url(self):
         return reverse('forum:group_detail', kwargs={'pk': self.pk})
+    def get_group(self):
+        return reverse('forum:group_detail', kwargs={'pk': self.pk})
+        
 class MemberShip(models.Model):
     person = models.ForeignKey(User,on_delete=models.CASCADE)
     group = models.ForeignKey(Group,on_delete=models.CASCADE)
@@ -76,6 +79,9 @@ class GroupPost(models.Model):
        verbose_name = '小组讨论'
        verbose_name_plural = verbose_name
        ordering = ['-created_time']
+       default_permissions = ()
+       permissions = (
+                  ("grouppost_delete", "讨论删除权限"),)
    def __str__(self):
        return self.title
    def get_absolute_url(self):
@@ -131,12 +137,10 @@ class Post(models.Model):
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
- 
         # 先将 Markdown 文本渲染成 HTML 文本
         # strip_tags 去掉 HTML 文本的全部 HTML 标签
         # 从文本摘取前 54 个字符赋给 excerpt
         self.excerpt = strip_tags(md.convert(self.body))[:54]
- 
         super().save(*args, **kwargs)
     def increase_views(self):
         self.views += 1
