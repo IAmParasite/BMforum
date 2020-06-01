@@ -42,29 +42,35 @@ def register(request):
     content = {'注册表单': rf}
     return render(request,'forum/register.html',content)
 
-class BookInIndexView(ListView):
-    model = Post        ## 告诉 django 我们要取的数据库模型是class Post
-    template_name = 'forum/index.html'
-    context_object_name = 'books_list'
-    #paginate_by = 10
+def index(request):
+    return render(request,'forum/index.html')
 
-class MovieInIndexView(ListView):
-    model = MoviePost
-    template_name = 'forum/index.html'
-    context_object_name = 'movies_list'
-    #paginate_by = 10
+def search_index(request):
+    return render(request,'forum/search_index.html')
 
-class GroupInIndexView(ListView):
-    model = Group
-    template_name = 'forum/index.html'
-    context_object_name = 'groups_list'
-    #paginate_by = 10
+# class BookInIndexView(ListView):
+#     model = Post        ## 告诉 django 我们要取的数据库模型是class Post
+#     template_name = 'forum/index.html'
+#     context_object_name = 'books_list'
+#     #paginate_by = 10
 
-class TopicInIndexView(ListView):
-    model = MoviePost
-    template_name = 'forum/index.html'
-    context_object_name = 'topics_list'
-    #paginate_by = 10
+# class MovieInIndexView(ListView):
+#     model = MoviePost
+#     template_name = 'forum/index.html'
+#     context_object_name = 'movies_list'
+#     #paginate_by = 10
+
+# class GroupInIndexView(ListView):
+#     model = Group
+#     template_name = 'forum/index.html'
+#     context_object_name = 'groups_list'
+#     #paginate_by = 10
+
+# class TopicInIndexView(ListView):
+#     model = MoviePost
+#     template_name = 'forum/index.html'
+#     context_object_name = 'topics_list'
+#     #paginate_by = 10
 
 class BooksIndexView(ListView):
     model = Post
@@ -303,8 +309,14 @@ def search(request):
         messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
         return redirect('forum:index')
 
-    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'forum/index.html', {'post_list': post_list})
+    book_post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    movie_post_list = MoviePost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    groups_list = Group.objects.filter(Q(name__icontains=q))
+    topic_post_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/search_index.html', {'book_post_list': book_post_list,
+                                                        'movie_post_list':movie_post_list,
+                                                        'groups_list': groups_list,
+                                                        'topic_post_list': topic_post_list})
 
 def book_search(request):
     q = request.GET.get('q')
@@ -315,6 +327,7 @@ def book_search(request):
         return redirect('forum:books_index')
 
     books_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    
     return render(request, 'forum/books_index.html', {'books_list': books_list})
 
 def movie_search(request):

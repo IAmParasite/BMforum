@@ -2,8 +2,8 @@ from django.urls import path #导入path函数
 from .import views 	#从当前的目录下导入views模块
 app_name = 'forum'
 urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
-    
-    path('index/', views.MovieInIndexView.as_view(), name='index'),
+    path('index/', views.index, name='index'),
+    #path('index/', views.MovieInIndexView.as_view(), name='index'),
     # path('index/', views.BookInIndexView.as_view(), name='index'),
     # path('index/', views.GroupInIndexView.as_view(), name='book_in_index'),
     # path('index/', views.TopicInIndexView.as_view(), name='topic_in_index'),
