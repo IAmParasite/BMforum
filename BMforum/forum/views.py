@@ -42,17 +42,35 @@ def register(request):
     content = {'注册表单': rf}
     return render(request,'forum/register.html',content)
 
-class IndexView(ListView):
-    model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
+class BookInIndexView(ListView):
+    model = Post        ## 告诉 django 我们要取的数据库模型是class Post
     template_name = 'forum/index.html'
-    context_object_name = 'post_list'
-    paginate_by = 10
-
-class BooksIndexView(ListView):
-    model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 这里其实应该命名为Books
-    template_name = 'forum/books_index.html'    
     context_object_name = 'books_list'
     #paginate_by = 10
+
+class MovieInIndexView(ListView):
+    model = MoviePost
+    template_name = 'forum/index.html'
+    context_object_name = 'movies_list'
+    #paginate_by = 10
+
+class GroupInIndexView(ListView):
+    model = Group
+    template_name = 'forum/index.html'
+    context_object_name = 'groups_list'
+    #paginate_by = 10
+
+class TopicInIndexView(ListView):
+    model = MoviePost
+    template_name = 'forum/index.html'
+    context_object_name = 'topics_list'
+    #paginate_by = 10
+
+class BooksIndexView(ListView):
+    model = Post
+    template_name = 'forum/books_index.html'    
+    context_object_name = 'books_list'
+    paginate_by = 10
 
 # 记得在顶部导入 DetailView
 class PostDetailView(DetailView):
@@ -248,7 +266,7 @@ class PostDetailView(DetailView):
 class TopicIndexView(ListView):
     model = TopicPost        ## 告诉 django 我们要取的数据库模型是class Post,
     template_name = 'forum/topic_index.html'
-    context_object_name = 'topic_list'
+    context_object_name = 'topics_list'
     #paginate_by = 10
 class TopicPostDetailView(DetailView):
     model = TopicPost
@@ -340,8 +358,8 @@ def topic_search(request):
         messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
         return redirect('forum:topic_index')
 
-    topic_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'forum/topic_index.html', {'topic_list': topic_list})
+    topics_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/topic_index.html', {'topics_list': topics_list})
 
 class CategoryView(ListView):
     model = Post

@@ -11,6 +11,7 @@ pillow = "*"
 django-bootstrap3 = "*"
 django-guardian = "*"
 Markdown = "*"
+django-multiurl = "*"
 
 [requires]
 python_version = "3.7"
