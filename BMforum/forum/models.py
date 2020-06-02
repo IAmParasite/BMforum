@@ -43,6 +43,7 @@ class Group(models.Model):
         return reverse('forum:group_detail', kwargs={'pk': self.pk})
     def get_group(self):
         return reverse('forum:group_detail', kwargs={'pk': self.pk})
+        
 class MemberShip(models.Model):
     person = models.ForeignKey(User,on_delete=models.CASCADE)
     group = models.ForeignKey(Group,on_delete=models.CASCADE)
@@ -63,6 +64,8 @@ class GroupPost(models.Model):
    author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
    views = models.PositiveIntegerField(default=0, editable=False)
    group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
+   top = models.BooleanField(default = False)
+   top_time = models.DateTimeField('置顶时间',default = timezone.now)
    def save(self, *args, **kwargs):
        self.modified_time = timezone.now()
        md = markdown.Markdown(extensions=[
@@ -136,12 +139,10 @@ class Post(models.Model):
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
- 
         # 先将 Markdown 文本渲染成 HTML 文本
         # strip_tags 去掉 HTML 文本的全部 HTML 标签
         # 从文本摘取前 54 个字符赋给 excerpt
         self.excerpt = strip_tags(md.convert(self.body))[:54]
- 
         super().save(*args, **kwargs)
     def increase_views(self):
         self.views += 1

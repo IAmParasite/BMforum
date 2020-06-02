@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block main %}
+
 		{% for group in groups_list %}
                 <article class="post post-1">
                     <header class="entry-header">
@@ -28,7 +30,7 @@
                         <div class="read-more cl-effect-14">
                             <a href="{{ group.get_absolute_url }}" class="more-link">查看小组<span class="meta-nav">→</span></a>
                              <a href="{{group.pk}}" class="more-link" method="post" style="margin-right: 25px">加入小组</a>
-                             <a href="{{group.name}}" class="more-link" method="post" style="margin-right: 55px">申请管理员</a>
+                             <a href="{{group.name}}" class="more-link" method="POST" style="margin-right: 55px">申请管理员</a>
                              
                         </div>
                     </div>

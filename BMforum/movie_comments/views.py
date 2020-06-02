@@ -1,7 +1,11 @@
 from forum.models import MoviePost
-from django.shortcuts import get_object_or_404, redirect, render
+from .models import MovieComment, MovieDislike, MovieLike
+from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
 from django.views.decorators.http import require_POST
- 
+from .forms import MovieCommentForm
+from django.contrib import messages
+import json
+import datetime
 from .forms import MovieCommentForm
 from django.contrib import messages
  
@@ -42,3 +46,40 @@ def comment(request, post_pk):
     }
     messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
     return render(request, 'movie_comments/preview.html', context=context)
+
+def add_like(request):
+    if request.is_ajax():
+        user = request.user
+        print(user)
+        contentid = request.POST.getlist('contend_id')
+        Commentt = MovieComment.objects.get(id = contentid[0])
+        created_time = datetime.datetime.now()
+        comment_id = MovieLike.objects.filter(comment_id = Commentt, user_id = request.user.id)
+        if comment_id.exists():
+            resp = {'status': '已经点赞'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+        else:
+            Commentt.like_num +=1
+            Commentt.save()
+            MovieLike.objects.update_or_create(user = user, comment = Commentt, created_time = created_time)
+            resp = {'errorcode': 100, 'status': '成功点赞'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+
+def add_dislike(request):
+    print("dislike")
+    if request.is_ajax():
+        user = request.user
+        contentid = request.POST.getlist('contend_id')
+        # contentid = request.POST.get('contend_id')
+        Commentt = MovieComment.objects.get(id = contentid[0])
+        created_time = datetime.datetime.now()
+        comment_id = MovieDislike.objects.filter(comment_id = Commentt, user_id = request.user.id)
+        if comment_id.exists():
+            resp = {'status': '已经反对'}
+            return HttpResponse(json.dumps(resp), content_type = "application/json")
+        else:
+            Commentt.dislike_num += 1
+            Commentt.save()
+            MovieDislike.objects.update_or_create(user = user, comment = Commentt, created_time = created_time)
+            resp = {'errorcode': 100, 'status': '成功反对'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")

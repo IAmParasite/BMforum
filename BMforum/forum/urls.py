@@ -22,4 +22,6 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     path('register/', views.register, name='register'),
     path('groups_index/<int:pk>', views.add_group, name='addgroup'),
     path('groups_index/<str:name>', views.add_groupmanager, name='addgroupmanager'),
+    path(r'delete/<int:pk>/<int:pkk>',views.deleteGroupPost,name = 'delete_grouppost'),
+    path(r'top/<int:pk>/<int:pkk>',views.topenGroupPost,name = 'topen_grouppost')
 ]
