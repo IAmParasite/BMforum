@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('movie_reports.urls')),
     path('', include('movie_comments.urls')),
     path('', include('TopicDiscuss.urls')),
+    path(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
 ]
