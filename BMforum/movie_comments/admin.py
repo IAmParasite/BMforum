@@ -5,7 +5,7 @@ from django.contrib import admin
 from .models import MovieComment
  
 class MovieCommentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'post', 'created_time']
-    fields = ['name', 'text', 'post']
+    list_display = ['title','name', 'post', 'created_time']
+    fields = ['title','name', 'text', 'post']
     
 admin.site.register(MovieComment, MovieCommentAdmin)
