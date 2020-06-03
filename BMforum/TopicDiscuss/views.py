@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 
 from .forms import TopicDiscussForm
 from django.contrib import messages
-
+import markdown
 
 @require_POST
 def comment(request, post_pk):
@@ -12,7 +12,7 @@ def comment(request, post_pk):
     # 这里我们使用了 django 提供的一个快捷函数 get_object_or_404，
     # 这个函数的作用是当获取的文章（Post）存在时，则获取；否则返回 404 页面给用户。
     post = get_object_or_404(TopicPost, pk=post_pk)
-
+    
     # django 将用户提交的数据封装在 request.POST 中，这是一个类字典对象。
     # 我们利用这些数据构造了 CommentForm 的实例，这样就生成了一个绑定了用户提交数据的表单。
     form = TopicDiscussForm(request.POST)
@@ -27,6 +27,12 @@ def comment(request, post_pk):
         # 将评论和被评论的文章关联起来。
         comment.post = post
         comment.name = request.user
+        comment.text = markdown.markdown(comment.text,
+                                  extensions=[
+                                      'markdown.extensions.extra',
+                                      'markdown.extensions.codehilite',
+                                      'markdown.extensions.toc',
+                                  ])
         # 最终将评论数据保存进数据库，调用模型实例的 save 方法
         comment.save()
         post.save()
