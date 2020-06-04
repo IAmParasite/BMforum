@@ -57,7 +57,7 @@ class GroupPost(models.Model):
    created_time = models.DateTimeField('创建时间', default=timezone.now)
    modified_time = models.DateTimeField('修改时间')
    excerpt = models.CharField(max_length=200, blank=True)
-   author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
+   author = models.ForeignKey(User, verbose_name='作者', null = True, on_delete=models.CASCADE, )
    views = models.PositiveIntegerField(default=0, editable=False)
    group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
    top = models.BooleanField(default = False)

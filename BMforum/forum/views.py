@@ -57,6 +57,12 @@ def add_post(request, group_id):        # 发帖
     messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
     return render(request, 'comments/preview.html', context=context)
 
+class IndexView(ListView):
+    model = Post
+    template_name = 'forum/index.html'
+    context_object_name = 'post_list'
+    paginate_by = 10
+
 def login(request):
     if request.method=='POST':
         user = authenticate(request,username=request.POST['用户名'],password=request.POST['密码'])
