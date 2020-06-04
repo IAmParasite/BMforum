@@ -12,7 +12,6 @@ def show_comment_form(context, post, form = None):
         'form': form,
         'post': post,
     }
-
 @register.inclusion_tag('movie_comments/inclusions/_list.html', takes_context=True)
 def show_comments(context, post):
     comment_list = post.moviecomment_set.all().order_by('-created_time')

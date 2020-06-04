@@ -13,6 +13,7 @@ django-guardian = "*"
 Markdown = "*"
 django-multiurl = "*"
 django-star-ratings = "*"
+django-comtrib = "*"
 
 [requires]
 python_version = "3.7"

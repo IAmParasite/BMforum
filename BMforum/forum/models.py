@@ -54,13 +54,14 @@ class MemberShip(models.Model):
 class GroupPost(models.Model):
    title = models.CharField('标题', max_length=70)
    body = models.TextField()
-   created_time = models.DateTimeField('创建时间', default = timezone.now)
+   created_time = models.DateTimeField('创建时间', default=timezone.now)
    modified_time = models.DateTimeField('修改时间')
    excerpt = models.CharField(max_length=200, blank=True)
-   author = models.ForeignKey(User, verbose_name='作者', null = True, on_delete=models.CASCADE)
+   author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
    views = models.PositiveIntegerField(default=0, editable=False)
-   group = models.ForeignKey(Group, verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
-
+   group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
+   top = models.BooleanField(default = False)
+   top_time = models.DateTimeField('置顶时间',default = timezone.now)
    def save(self, *args, **kwargs):
        self.modified_time = timezone.now()
        md = markdown.Markdown(extensions=[

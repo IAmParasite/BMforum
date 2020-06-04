@@ -14,7 +14,17 @@
             background: url(//s3b.pstatp.com/toutiao/resource/ntoutiao_web/static/image/login/login_bg_7584f6a.png);
         }
     </style>
+
+  
 </head>
+ {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        
+        {{ message }}
+      </div>
+    {% endfor %}
+{% endif %} 
 <body class="login-body">
 <div class="flex-center">
     <div class="container">

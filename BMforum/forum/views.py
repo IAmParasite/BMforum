@@ -137,9 +137,11 @@ def add_group(request, pk):
             mm = MemberShip.objects.filter(person=user_now,group=group_now)
             if not mm:
                 m1=MemberShip.objects.create(person=user_now,group=group_now,date_join=timezone.now())
+            messages.add_message(request,messages.SUCCESS,"加入小组成功")
             return redirect('forum:groups_index')
 
         else:
+            messages.add_message(request,messages.ERROR,"还未登录,请先登录")
             return render(request,'registration/login.html',{'错误':'还未登录！'})
     else:
         return render(request,'forum/login.html')
@@ -154,16 +156,31 @@ def add_groupmanager(request,name):
             if  group_now:
                 for gp in gg:
                     assign_perm('grouppost_delete',user_now, gp)
+            
+            messages.add_message(request,messages.SUCCESS,"申请管理员成功")
             return redirect('forum:groups_index')
 
         else:
+            messages.add_message(request,messages.ERROR,"还未登录,请先登录")
             return render(request,'registration/login.html',{'错误':'还未登录！'})
     else:
         return render(request,'forum/login.html')
-        
-    
+#删除小组内的帖子
+def deleteGroupPost(request,pk,pkk):
+    groupp = GroupPost.objects.get(pk=pk)
+    groupp.delete()
+    messages.add_message(request,messages.SUCCESS,"删除帖子成功")
+    return redirect('/groups/'+str(pkk))
+#置顶帖子
+def topenGroupPost(request,pk,pkk):
+    groupp = GroupPost.objects.get(pk=pk)
+    groupp.top = True
+    groupp.top_time = timezone.now()
+    groupp.save()
+    messages.add_message(request,messages.SUCCESS,"帖子置顶成功")
+    return redirect('/groups/'+str(pkk))
 class GroupsIndexView(ListView):
-    model = Group        ## 告诉 django 我们要取的数据库模型是class Group, 取出所有小组
+    model = Group        ## 告诉 django 我们要取的数据库模型是class GroupPost,
     template_name = 'forum/groups_index.html'
     context_object_name = 'groups_list'
 #paginate_by = 10
@@ -173,9 +190,9 @@ class GroupPostView(ListView):
     template_name = 'forum/group_detail.html'
     context_object_name = 'group_post'
     def get_queryset(self):
-        c = Group.objects.filter(pk = self.kwargs['pk']).first()
+        c = Group.objects.filter(pk=self.kwargs['pk']).first()
         
-        return GroupPost.objects.filter(group=c).order_by('created_time')
+        return GroupPost.objects.filter(group=c).order_by('-top_time','created_time')
         
             
     def get_object(self, queryset=None):
