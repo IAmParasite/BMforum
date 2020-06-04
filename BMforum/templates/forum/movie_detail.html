@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load movie_comments_extras %}
 {% load movie_reports_extras %}
+{% load ratings %}
 {% block main %}
                 <article class="movie_post movie_post-{{ movie_post.pk}}">
                     <header class="entry-header">
@@ -12,6 +13,7 @@
                             <span class="post-author"><a href="#">{{ movie_post.author }}</a></span>
                             <span class="comments-link"><a href="#comment-area">4 评论</a></span>
                             <span class="views-count"><a href="#">{{ movie_post.views }} 阅读</a></span>
+                            {% ratings object %}
                         </div>
                     </header>
                     <div class="entry-content clearfix">
@@ -26,3 +28,15 @@
                 
 {% endblock main %}
  
+{% block toc %}
+{% if movie_post.toc %}
+<div class="widget widget-content">
+    <h3 class="widget-title">目录</h3>
+    <div class="toc">
+        <ul>
+            {{ movie_post.toc|safe }}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock toc %}

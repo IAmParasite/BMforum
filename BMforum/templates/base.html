@@ -1,6 +1,8 @@
 {% load static %}
+{% load forum_extras %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>书籍影视交流平台</title>
 
@@ -20,211 +22,215 @@
     <script src="{% static 'forum/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'forum/js/pace.min.js' %}"></script>
     <script src="{% static 'forum/js/modernizr.custom.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $.ajaxSetup({
-               data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-           });       
-                 $(".collect2").click(function(){
-                     console.log("进入Ajax")
-               $(this).children().css({"color":"pink"})
-                 $(this).css({"color":"pink"})
-              var contend_id = $(this).attr("content_id2");
-              console.log(contend_id)
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+            $(".collect2").click(function () {
+                console.log("进入Ajax")
+                $(this).children().css({ "color": "pink" })
+                $(this).css({ "color": "pink" })
+                var contend_id = $(this).attr("content_id2");
+                console.log(contend_id)
                 $.ajax({
                     url: "/like/",
                     type: "POST",
-                    data:{ contend_id : contend_id }
-               }).done(function (data) {
-                   alert(data.status)
+                    data: { contend_id: contend_id }
+                }).done(function (data) {
+                    alert(data.status)
                     console.log(data.status)
-               }).fail(function () {
-                   alert('fail');
-               });
-             });
+                }).fail(function () {
+                    alert('fail');
+                });
+            });
 
-                 $(".collect3").click(function(){
-               $(this).children().css({"color":"pink"})
-                 $(this).css({"color":"pink"})
-              var contend_id=$(this).attr("content_id3");
-              console.log(contend_id)
+            $(".collect3").click(function () {
+                $(this).children().css({ "color": "pink" })
+                $(this).css({ "color": "pink" })
+                var contend_id = $(this).attr("content_id3");
+                console.log(contend_id)
                 $.ajax({
-                   url: "/dislike/",
-                    type:"POST",
-                    data:{contend_id:contend_id}
-               }).done(function (data) {
-                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
-                   alert(data.status)
+                    url: "/dislike/",
+                    type: "POST",
+                    data: { contend_id: contend_id }
+                }).done(function (data) {
+                    // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                    alert(data.status)
                     console.log(data.status)
-               }).fail(function () {
-                   alert('fail');
-               });
-             });
+                }).fail(function () {
+                    alert('fail');
+                });
+            });
 
-             $(".collect4").click(function(){
-               $(this).children().css({"color":"pink"})
-                 $(this).css({"color":"pink"})
-              var contend_id=$(this).attr("content_id4");
-              console.log(contend_id)
+            $(".collect4").click(function () {
+                $(this).children().css({ "color": "pink" })
+                $(this).css({ "color": "pink" })
+                var contend_id = $(this).attr("content_id4");
+                console.log(contend_id)
                 $.ajax({
-                   url: "/movielike/",
-                    type:"POST",
-                    data:{contend_id : contend_id}
-               }).done(function (data) {
-                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
-                   alert(data.status)
+                    url: "/movielike/",
+                    type: "POST",
+                    data: { contend_id: contend_id }
+                }).done(function (data) {
+                    // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                    alert(data.status)
                     console.log(data.status)
-               }).fail(function () {
-                   alert('fail');
-               });
-             });
+                }).fail(function () {
+                    alert('fail');
+                });
+            });
 
-             $(".collect5").click(function(){
-               $(this).children().css({"color":"pink"})
-                 $(this).css({"color":"pink"})
-              var contend_id=$(this).attr("content_id5");
-              console.log(contend_id)
+            $(".collect5").click(function () {
+                $(this).children().css({ "color": "pink" })
+                $(this).css({ "color": "pink" })
+                var contend_id = $(this).attr("content_id5");
+                console.log(contend_id)
                 $.ajax({
-                   url: "/moviedislike/",
-                    type:"POST",
-                    data:{contend_id : contend_id}
-               }).done(function (data) {
-                   // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
-                   alert(data.status)
+                    url: "/moviedislike/",
+                    type: "POST",
+                    data: { contend_id: contend_id }
+                }).done(function (data) {
+                    // 指定为类型为json 则会将数据处理为对象的 即自动JSON.parse 了
+                    alert(data.status)
                     console.log(data.status)
-               }).fail(function () {
-                   alert('fail');
-               });
-             });
-                
-           });
-       </script>
+                }).fail(function () {
+                    alert('fail');
+                });
+            });
+
+        });
+    </script>
 </head>
 {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-        {{ message }}
-      </div>
-    {% endfor %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+    {{ message }}
+</div>
+{% endfor %}
 {% endif %}
+
 <body>
-<div class="container">
-    <header id="site-header">
-        <div class="row">
-            <div class="col-md-4 col-sm-5 col-xs-8">
-                <div class="logo">
-                    <h1><a href={% url 'forum:index' %}><b>书籍影视</b>交流平台</a></h1>
-                </div>
-            </div><!-- col-md-4 -->
-            <div class="col-md-8 col-sm-7 col-xs-4">
-                <nav class="main-nav" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" id="trigger-overlay" class="navbar-toggle">
-                            <span class="ion-navicon"></span>
-                        </button>
-                    </div>
-
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href= {% url 'forum:index' %} data-hover="首页">首页</a></li>
-                            <li class="cl-effect-11"><a href= {% url 'forum:book_index' %} data-hover="书籍">书籍</a></li>
-                            <li class="cl-effect-11"><a href={% url 'forum:movie_index' %} data-hover="影视">影视</a></li>
-                            <li class="cl-effect-11"><a href={% url 'forum:groups_index' %} data-hover="小组">小组</a></li>
-                            <li class="cl-effect-11"><a href={% url 'forum:topic_index' %} data-hover="话题">话题</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </nav>
-                <div id="header-search-box">
-                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
-                    <div id="search-form" class="search-form">
-                        <form role="search" method="get" id="searchform" action="#">
-                            <input type="search" placeholder="搜索" required>
-                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
-                        </form>
-                    </div>
-                </div>
-            </div><!-- col-md-8 -->
-        </div>
-    </header>
-</div>
-
-<div class="content-body">
     <div class="container">
-        <div class="row">
-            <main class="col-md-8">
-				{% block main %}
-				{% endblock main %}
-            </main>
-            <aside class="col-md-4">
-			{% if request.user.is_authenticated %}
-				<li> 欢迎 {{ user }} 用户 </li>
-				<a href="{% url 'logout' %}">
-					<input class="btn btn-default" type="submit" value="Logout" />
-				</a>
-			{% else %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                           <a href="{% url 'login' %}">登录</ a>
-                          <a href="{% url 'users:register' %}">注册</a>
-                        </h3>
+        <header id="site-header">
+            <div class="row">
+                <div class="col-md-4 col-sm-5 col-xs-8">
+                    <div class="logo">
+                        <h1><a href={% url 'forum:index' %}><b>书籍影视</b>交流平台</a></h1>
                     </div>
-                </div>
-			{% endif %}
-                <div class="widget widget-recent-posts">
-                    <h3 class="widget-title">最新</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django 博客开发入门教程：前言</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="widget widget-archives">
-                    <h3 class="widget-title">归档</h3>
-                    <ul>
-                        <li>
-                            <a href="#">2017 年 5 月</a>
-                        </li>
-                        
-                    </ul>
-                </div>
+                </div><!-- col-md-4 -->
+                <div class="col-md-8 col-sm-7 col-xs-4">
+                    <nav class="main-nav" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" id="trigger-overlay" class="navbar-toggle">
+                                <span class="ion-navicon"></span>
+                            </button>
+                        </div>
 
-                <div class="widget widget-category">
-                    <h3 class="widget-title">分类</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="widget widget-tag-cloud">
-                    <h3 class="widget-title">标签云</h3>
-                    <ul>
-                        <li>
-                            <a href="#">Django</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-            </aside>
-        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="cl-effect-11"><a href={% url 'forum:index' %} data-hover="首页">首页</a></li>
+                                <li class="cl-effect-11"><a href={% url 'forum:book_index' %} data-hover="书籍">书籍</a>
+                                </li>
+                                <li class="cl-effect-11"><a href={% url 'forum:movie_index' %} data-hover="影视">影视</a>
+                                </li>
+                                <li class="cl-effect-11"><a href={% url 'forum:groups_index' %} data-hover="小组">小组</a>
+                                </li>
+                                <li class="cl-effect-11"><a href={% url 'forum:topic_index' %} data-hover="话题">话题</a>
+                                </li>
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+                    </nav>
+                    {% block search %}
+                    {% endblock search %}
+                </div><!-- col-md-8 -->
+            </div>
+        </header>
     </div>
-</div>
-<footer id="site-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="copyright">&copy 2020 BUAA 软件学院
-                </p>
+
+    <div class="content-body">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8">
+                    {% block main %}
+                    {% endblock main %}
+                </main>
+                <aside class="col-md-4">
+                    
+                    {% if request.user.is_authenticated %}
+                    <li> 欢迎 {{ user }} 用户 </li>
+                    <a href="{% url 'logout' %}">
+                        <input class="btn btn-default" type="submit" value="Logout" />
+                    </a>
+                    {% else %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="{% url 'login' %}">登录</ a>
+                                    <a href="{% url 'users:register' %}">注册</a>
+                            </h3>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% block toc %}
+                    {% endblock toc %}
+                    <div class="widget widget-recent-posts">
+                        <h3 class="widget-title">最新</h3>
+                        <ul>
+                            <li>
+                                <a href="#">Django 博客开发入门教程：前言</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="widget widget-archives">
+                        <h3 class="widget-title">归档</h3>
+                        <ul>
+                            <li>
+                                <a href="#">2017 年 5 月</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="widget widget-category">
+                        <h3 class="widget-title">分类</h3>
+                        <ul>
+                            <li>
+                                <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="widget widget-tag-cloud">
+                        <h3 class="widget-title">标签云</h3>
+                        <ul>
+                            <li>
+                                <a href="#">Django</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </aside>
             </div>
         </div>
     </div>
-</footer>
+    <footer id="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="copyright">&copy 2020 BUAA 软件学院
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-<script src="{% static 'forum/js/script.js' %}"></script>
+    <script src="{% static 'forum/js/script.js' %}"></script>
 </body>
+
 </html>

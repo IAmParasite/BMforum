@@ -33,9 +33,14 @@ class Group(models.Model):
     name = models.CharField(max_length=100,unique=True)
     created_time = models.DateTimeField('创建时间', default=timezone.now)
     members = models.ManyToManyField(User, through='MemberShip')
+    views = models.PositiveIntegerField(default=0, editable=False)
     class Meta:
         verbose_name = '小组'
         verbose_name_plural = verbose_name
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     def __str__(self):
         return self.name
@@ -52,20 +57,17 @@ class MemberShip(models.Model):
         verbose_name = '小组关系'
 
 class GroupPost(models.Model):
-
    title = models.CharField('标题', max_length=70)
    body = models.TextField()
-
    created_time = models.DateTimeField('创建时间', default=timezone.now)
    modified_time = models.DateTimeField('修改时间')
-
    excerpt = models.CharField(max_length=200, blank=True)
-
-   author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
+   author = models.ForeignKey(User, verbose_name='作者', null = True, on_delete=models.CASCADE, )
    views = models.PositiveIntegerField(default=0, editable=False)
    group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
    top = models.BooleanField(default = False)
    top_time = models.DateTimeField('置顶时间',default = timezone.now)
+   im = models.BooleanField(default = False)
    def save(self, *args, **kwargs):
        self.modified_time = timezone.now()
        md = markdown.Markdown(extensions=[
@@ -89,12 +91,10 @@ class GroupPost(models.Model):
    def get_absolute_url(self):
        return reverse('forum:group_detailmore', kwargs={'pk': self.pk})
 
-
-     
 class Post(models.Model):
  
     # 文章标题
-    title = models.CharField('标题', max_length=70)
+    title = models.CharField('书名', max_length=70)
  
     # 文章正文，我们使用了 TextField。
     # 存储比较短的字符串可以使用 CharField，但对于文章的正文来说可能会是一大段文本，因此使用 TextField 来存储大段文本。
@@ -205,6 +205,10 @@ class TopicPost(models.Model):
         ])
         self.excerpt = strip_tags(md.convert(self.body))[:54]
         super().save(*args, **kwargs)
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     class Meta:
         verbose_name = '话题'

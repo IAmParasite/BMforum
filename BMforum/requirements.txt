@@ -2,6 +2,8 @@ django==2.2.3
 pillow
 django-bootstrap3
 markdown
+django-guardian
+django-star-ratings
 
 1\login register 重定向 拼写错误
 2、User 使用的是django自带的 而非 自定义类型 //这个可以无视
