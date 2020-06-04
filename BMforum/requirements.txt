@@ -3,3 +3,4 @@ pillow
 django-bootstrap3
 markdown
 django-guardian
+django-star-ratings

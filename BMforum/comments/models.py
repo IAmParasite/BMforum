@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from users.models import User
 from django.urls import reverse
-
 class Comment(models.Model):
     name = models.CharField('名字', max_length=50)
     text = models.TextField('内容')

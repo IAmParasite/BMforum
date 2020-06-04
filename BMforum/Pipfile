@@ -12,6 +12,7 @@ django-bootstrap3 = "*"
 django-guardian = "*"
 Markdown = "*"
 django-multiurl = "*"
+django-star-ratings = "*"
 
 [requires]
 python_version = "3.7"

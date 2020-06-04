@@ -143,7 +143,6 @@ def add_group(request, pk):
             return render(request,'registration/login.html',{'错误':'还未登录！'})
     else:
         return render(request,'forum/login.html')
-
 ##管理员添加
 def add_groupmanager(request,name):
     if request.method == 'GET':
