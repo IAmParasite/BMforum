@@ -9,6 +9,7 @@ import datetime
 from .forms import MovieCommentForm
 from django.contrib import messages
 import markdown
+
 @require_POST
 def comment(request, post_pk):
     # 先获取被评论的文章，因为后面需要把评论和被评论的文章关联起来。

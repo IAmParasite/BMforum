@@ -6,7 +6,7 @@ python manage.py migrate
 
 python manage.py createsuperuser
 
-root
+admin
 123
 
 root
