@@ -1,35 +1,48 @@
 {% extends 'base.html' %}
 {% load guardian_tags %}
+{% load forum_extras %}
 {% block main %}
+
 {% for group in group_post.all %}
 {% get_obj_perms request.user for group as "grouppost_perms" %}
-                <article class="post post-1">
-                    <header class="entry-header">
-                        <h1 class="entry-title">
-                            <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
-                        </h1>
-                        <div class="entry-meta">
-                            
-                            <span class="post-date"><a href="#"><time class="entry-date"
-                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-                            <span class="group-author"><a href="#">{{group.author}}</a></span>
-                            
-                            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
-                        </div>
-                    </header>
-                    <div class="entry-content clearfix">
-                        <p>{{ group.excerpt }}...</p>
-                        <div class="read-more cl-effect-14">
-                            {% if "grouppost_delete" in grouppost_perms %}
-                                <a href="#" class="more-link">删除<span class="meta-nav"></span></a>
-                                
-                            {% endif %}
-                            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容<span class="meta-nav">→</span></a>
-                        </div>
-                    </div>
-                </article>
-{% empty %}
-<div class="no-post">暂时还没有发表讨论！</div>
-{% endfor %}
+        <article class="post post-1">
+            <header class="entry-header">
+                <h1 class="entry-title">
+                    <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+                </h1>
+                <div class="entry-meta">
+                    
+                    <span class="post-date"><a href="#"><time class="entry-date"
+                                                                datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                    <span class="group-author"><a href="#"> {{ group.author }}</a></span>
+                    
+                    <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <p>{{ group.excerpt }}...</p>
+                <div class="read-more cl-effect-14">
+                    {% if "grouppost_delete" in grouppost_perms %}
+                        <a href="#" class="more-link">删除<span class="meta-nav"></span></a>
+                    {% endif %}
+                    <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容<span class="meta-nav">→</span></a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="no-post">暂时还没有发表帖子！</div>
+        {% endfor %}
+        {% show_add_form group_post.first %}
 {% endblock main %}
- 
+
+{% block search %}
+<div id="header-search-box">
+    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+    <div id="search-form" class="search-form">
+        <form role="search" method="get" id="searchform" action="{% url 'forum:group_post_search' %}">
+            <input type="search" name="q" placeholder="搜索小组内帖子" required>
+            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+        </form>
+    </div>
+</div>
+{% endblock search %}

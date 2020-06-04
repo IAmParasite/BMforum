@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load forum_extras %}
+{% block main %}
+
+<h1>搜索到的书籍相关内容</h1>
+{% for post in book_post_list %}
+<article class="post post-1">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </h1>
+        <div class="entry-meta">
+            <span class="post-category"><a href="#">Django 博客教程</a></span>
+            <span class="post-date"><a href="#"><time class="entry-date"
+                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+            <span class="post-author"><a href="#">追梦人物</a></span>
+            <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">xx 评论</a></span>
+            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ post.excerpt }}...</p>
+        <div class="read-more cl-effect-14">
+            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+        </div>
+    </div>
+</article>
+{% empty %}
+<div class="no-post">没有相关结果！</div>
+{% endfor %}
+<br>
+<br>
+<h1>搜索到的影视相关内容</h1>
+{% for movie in movie_post_list %}
+<article class="post post-1">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+        </h1>
+        <div class="entry-meta">
+            <span class="post-category"><a href="#">Django 博客教程</a></span>
+            <span class="post-date"><a href="#"><time class="entry-date"
+                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+            <span class="post-author"><a href="#">追梦人物</a></span>
+            <span class="comments-link"><a href="{{ movie.get_absolute_url }}#comment-area">xx 评论</a></span>
+            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ movie.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ movie.excerpt }}...</p>
+        <div class="read-more cl-effect-14">
+            <a href="{{ movie.get_absolute_url }}" class="more-link">继续查看影视内容<span class="meta-nav">→</span></a>
+        </div>
+    </div>
+</article>
+{% empty %}
+<div class="no-post">没有相关结果！</div>
+{% endfor %}
+<br>
+<br>
+<h1>热点小组</h1>
+
+{% for group in groups_list %}
+<article class="post post-1">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            <a href="{{ group.get_absolute_url }}">{{ group.name }}</a>
+        </h1>
+        <div class="entry-meta">
+
+
+            <h3>小组成员:
+                {% for mem in group.members.all%}
+
+                {{mem}}
+
+                {%endfor%}</h3>
+            <span class="group-created_time"><a href="#">创建时间:{{ group.created_time }} </a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <div class="read-more cl-effect-14">
+            <a href="{{ group.get_absolute_url }}" class="more-link">查看小组<span class="meta-nav">→</span></a>
+            <a href="{{group.pk}}" class="more-link" method="post" style="margin-right: 25px">加入小组</a>
+            <a href="{{group.name}}" class="more-link" method="post" style="margin-right: 55px">申请管理员</a>
+
+        </div>
+    </div>
+</article>
+{% empty %}
+<div class="no-post">没有相关结果！</div>
+{% endfor %}
+<br>
+<br>
+<h1>搜索到的话题相关内容</h1>
+
+{% for topic in topic_post_list %}
+<article class="post post-1">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            <a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a>
+        </h1>
+        <div class="entry-meta">
+            <span class="post-category"><a href="#">Django 博客教程</a></span>
+            <span class="post-date"><a href="#"><time class="entry-date"
+                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+
+            <span class="comments-link"><a href="{{ topic.get_absolute_url }}#comment-area">xx 评论</a></span>
+
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ topic.excerpt }}...</p>
+        <div class="read-more cl-effect-14">
+            <a href="{{ topic.get_absolute_url }}" class="more-link">进入话题<span class="meta-nav">→</span></a>
+        </div>
+    </div>
+</article>
+{% empty %}
+<div class="no-post">没有相关结果！</div>
+{% endfor %}
+
+<!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+{% if is_paginated %}
+<div class="pagination-simple">
+    <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <!-- 显示当前页面信息 -->
+    <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
+    <!-- 如果当前页还有下一页，显示一个下一页的按钮 -->
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock main %}
+
+
+{% block search %}
+<div id="header-search-box">
+    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+    <div id="search-form" class="search-form">
+        <form role="search" method="get" id="searchform" action="{% url 'forum:search' %}">
+            <input type="search" name="q" placeholder="搜索" required>
+            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+        </form>
+    </div>
+</div>
+{% endblock search %}

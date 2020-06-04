@@ -2,9 +2,4 @@ django==2.2.3
 pillow
 django-bootstrap3
 markdown
-
-1\login register 重定向 拼写错误
-2、User 使用的是django自带的 而非 自定义类型 //这个可以无视
-3、在view中导入模块（从导入http那个往后都是）
-虚拟环境中 pip install django-guardian #需求
-在settings文件中添加APP 'guardian', #修改了settings
+django-guardian

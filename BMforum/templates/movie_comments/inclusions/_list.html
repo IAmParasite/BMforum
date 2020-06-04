@@ -7,7 +7,7 @@
       <span class="nickname">{{ comment.name }}</span>
       <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
       <div class="text">
-        {{ comment.text|linebreaks }}
+        {{ comment.text|safe|linebreaks }}
       </div>
     </li>
 
