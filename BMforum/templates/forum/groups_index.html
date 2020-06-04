@@ -6,24 +6,18 @@
 <article class="post post-1">
     <header class="entry-header">
         <h1 class="entry-title">
-            <a href="{{ group.get_absolute_url }}">{{ group.name }}</a>
+            <a href=" {{ group.get_absolute_url }} ">{{ group.name }}</a>
         </h1>
         <div class="entry-meta">
-
-
             <h3>小组成员:
                 {% for mem in group.members.all%}
-
-                {{mem}}
-
-                {%endfor%}</h3>
+                    {{mem}}
+                {% endfor %}
+            </h3>
             <span class="group-created_time"><a href="#">创建时间:{{ group.created_time }} </a></span>
         </div>
     </header>
     <div class="entry-content clearfix">
-
-
-
 
         <div class="read-more cl-effect-14">
             <a href="{{ group.get_absolute_url }}" class="more-link">查看小组<span class="meta-nav">→</span></a>

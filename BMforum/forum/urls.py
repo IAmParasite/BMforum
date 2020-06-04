@@ -2,11 +2,7 @@ from django.urls import path #导入path函数
 from .import views 	#从当前的目录下导入views模块
 app_name = 'forum'
 urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
-    path('index/', views.index, name='index'),
-    #path('index/', views.MovieInIndexView.as_view(), name='index'),
-    # path('index/', views.BookInIndexView.as_view(), name='index'),
-    # path('index/', views.GroupInIndexView.as_view(), name='book_in_index'),
-    # path('index/', views.TopicInIndexView.as_view(), name='topic_in_index'),
+    path('index/', views.IndexView.as_view(), name='index'),
     path('book_index/', views.BooksIndexView.as_view(), name='book_index'),	#第一个参数是网址，第二个参数是处理函数#第三个name 为传递的参数，这个参数的值作为处理函数index的别名（我也不太懂）
     #path('movies_index/', views.MoviesIndexView.as_view(), name='movie_index'),
     path('groups_index/', views.GroupsIndexView.as_view(), name='groups_index'),
@@ -18,6 +14,7 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     path('books/<int:pk>/', views.PostDetailView.as_view(), name='book_detail'),
     path('movies/<int:pk>/', views.MoviePostDetailView.as_view(), name='movie_detail'),
     path('topics/<int:pk>/', views.TopicPostDetailView.as_view(), name='topic_detail'),
+    path('add/<int:group_id>', views.add_post, name='add'),
     #path('archives/<int:year>/<int:month>/', views.archive, name='archive'),
     #path('categories/<int:pk>/', views.CategoryView.as_view(), name='category'),
     #path('tag/<int:pk>/', views.TagView.as_view(), name='tag'),
@@ -31,4 +28,6 @@ urlpatterns = [			#网址和处理函数的关系写在urlpatterns列表里面
     path('register/', views.register, name='register'),
     path('groups_index/<int:pk>', views.add_group, name='addgroup'),
     path('groups_index/<str:name>', views.add_groupmanager, name='addgroupmanager'),
+    path(r'delete/<int:pk>/<int:pkk>',views.deleteGroupPost,name = 'delete_grouppost'),
+    path(r'top/<int:pk>/<int:pkk>',views.topenGroupPost,name = 'topen_grouppost')
 ]

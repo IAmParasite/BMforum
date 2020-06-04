@@ -1,7 +1,6 @@
 from forum.models import TopicPost
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-
 from .forms import TopicDiscussForm
 from django.contrib import messages
 import markdown

@@ -14,8 +14,7 @@ def comment(request, post_pk):
     # 先获取被评论的文章，因为后面需要把评论和被评论的文章关联起来。
     # 这里我们使用了 django 提供的一个快捷函数 get_object_or_404，
     # 这个函数的作用是当获取的文章（Post）存在时，则获取；否则返回 404 页面给用户。
-    post = get_object_or_404(Post, pk=post_pk)
- 
+    post = get_object_or_404(Post, pk = post_pk)
     # django 将用户提交的数据封装在 request.POST 中，这是一个类字典对象。
     # 我们利用这些数据构造了 CommentForm 的实例，这样就生成了一个绑定了用户提交数据的表单。
     form = CommentForm(request.POST)
