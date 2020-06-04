@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load guardian_tags %}
 {% block main %}
-
+{% load forum_extras %}
 {% for group in group_post.all %}
 {% get_obj_perms request.user for group as "grouppost_perms" %}
         <article class="post post-1">
