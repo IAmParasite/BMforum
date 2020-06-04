@@ -1,4 +1,0 @@
-1、grouppost models 改动 增加top 与top_time
-2、urls增加delete与top的路径设置
-3、view 函数 增加topenGroupPost 与deleteGroupPost 函数 同时修改了GroupPostView函数get_queryset方法return orderby 顺序
-4、templates中修改了forum文件夹中groups_index.html与group_detail.html
