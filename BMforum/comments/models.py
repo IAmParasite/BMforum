@@ -3,6 +3,7 @@ from django.utils import timezone
 from users.models import User
 from django.urls import reverse
 class Comment(models.Model):
+    title = models.CharField('标题', max_length=70,default='title')
     name = models.CharField('名字', max_length=50)
     text = models.TextField('内容')
     created_time = models.DateTimeField('创建时间', default=timezone.now)
