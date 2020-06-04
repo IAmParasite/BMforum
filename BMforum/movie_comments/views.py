@@ -6,8 +6,6 @@ from .forms import MovieCommentForm
 from django.contrib import messages
 import json
 import datetime
-from .forms import MovieCommentForm
-from django.contrib import messages
 import markdown
 
 @require_POST
