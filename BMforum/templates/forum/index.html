@@ -1,61 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load forum_extras %}
+{% load comments_extras %}
+{% load reports_extras %}
+{% load movie_comments_extras %}
+{% load movie_reports_extras %}
 {% block main %}
-<h1>热点书籍</h1>
-{% for post in post_list %}
 
-<article class="post post-1">
-    <header class="entry-header">
-        <h1 class="entry-title">
-            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-        </h1>
-        <div class="entry-meta">
-            <span class="post-category"><a href="#">Django 博客教程</a></span>
-            <span class="post-date"><a href="#"><time class="entry-date"
-                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-            <span class="post-author"><a href="#">追梦人物</a></span>
-            <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">xx 评论</a></span>
-            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
-        </div>
-    </header>
-    <div class="entry-content clearfix">
-        <p>{{ post.excerpt }}...</p>
-        <div class="read-more cl-effect-14">
-            <a href="{{ post.get_absolute_url }}" class="more-link">继续查看图书内容<span class="meta-nav">→</span></a>
-        </div>
-    </div>
-</article>
-{% empty %}
-<div class="no-post"><h4>暂时还没有发布的热点书籍内容</h4></div>
-{% endfor %}
-<h1>热点影视</h1>
-{% for post in post_list %}
-
-<article class="post post-1">
-    <header class="entry-header">
-        <h1 class="entry-title">
-            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-        </h1>
-        <div class="entry-meta">
-            <span class="post-category"><a href="#">Django 博客教程</a></span>
-            <span class="post-date"><a href="#"><time class="entry-date"
-                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-            <span class="post-author"><a href="#">追梦人物</a></span>
-            <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">xx 评论</a></span>
-            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
-        </div>
-    </header>
-    <div class="entry-content clearfix">
-        <p>{{ post.excerpt }}...</p>
-        <div class="read-more cl-effect-14">
-            <a href="{{ post.get_absolute_url }}" class="more-link">继续查看影视内容<span class="meta-nav">→</span></a>
-        </div>
-    </div>
-</article>
-{% empty %}
-<div class="no-post"><h4>暂时还没有发布的热点影视内容！</h4></div>
-{% endfor %}
+{% show_book_posts %}
+{% show_movie_posts %}
+{% show_groups %}
+{% show_topic_posts %}
+{% show_likecomments post %}
+{% show_likemoviecomments post %}
 <!-- 简单分页效果
                 <div class="pagination-simple">
                     <a href="#">上一页</a>
@@ -78,3 +35,16 @@
 </div>
 {% endif %}
 {% endblock main %}
+
+
+{% block search %}
+<div id="header-search-box">
+    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+    <div id="search-form" class="search-form">
+        <form role="search" method="get" id="searchform" action="{% url 'forum:search' %}">
+            <input type="search" name="q" placeholder="搜索" required>
+            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+        </form>
+    </div>
+</div>
+{% endblock search %}

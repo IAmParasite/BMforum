@@ -8,6 +8,8 @@ from markdown.extensions.toc import TocExtension
 from django.utils.text import slugify
 from django.utils.html import strip_tags
 from django.contrib.auth import get_user_model as user_model
+from django.core.validators import MinLengthValidator
+
 User = user_model()
 
 class Category(models.Model):
@@ -29,9 +31,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-<<<<<<< Updated upstream
- 
-=======
 class Group(models.Model):
     name = models.CharField(max_length=100,unique=True)
     created_time = models.DateTimeField('创建时间', default=timezone.now)
@@ -62,7 +61,7 @@ class MemberShip(models.Model):
 class GroupPost(models.Model):
 
    title = models.CharField('标题', max_length=70)
-   body = models.TextField()
+   body = models.TextField(validators=[MinLengthValidator(25)])
 
    created_time = models.DateTimeField('创建时间', default=timezone.now)
    modified_time = models.DateTimeField('修改时间')
@@ -97,11 +96,10 @@ class GroupPost(models.Model):
 
 
      
->>>>>>> Stashed changes
 class Post(models.Model):
  
     # 文章标题
-    title = models.CharField('书名', max_length=70)
+    title = models.CharField('标题', max_length=70)
  
     # 文章正文，我们使用了 TextField。
     # 存储比较短的字符串可以使用 CharField，但对于文章的正文来说可能会是一大段文本，因此使用 TextField 来存储大段文本。
@@ -146,19 +144,17 @@ class Post(models.Model):
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
- 
         # 先将 Markdown 文本渲染成 HTML 文本
         # strip_tags 去掉 HTML 文本的全部 HTML 标签
         # 从文本摘取前 54 个字符赋给 excerpt
         self.excerpt = strip_tags(md.convert(self.body))[:54]
- 
         super().save(*args, **kwargs)
     def increase_views(self):
         self.views += 1
         self.save(update_fields=['views'])
 
     class Meta:
-        verbose_name = '图书'
+        verbose_name = '书籍'
         verbose_name_plural = verbose_name
         ordering = ['-created_time']
 

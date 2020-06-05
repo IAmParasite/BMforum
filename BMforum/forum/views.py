@@ -4,12 +4,21 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
-from .models import Post,MoviePost,Category,Tag,TopicPost
 from django.views.generic import ListView, DetailView
+from .models import Post, Category, Tag,Group,MemberShip,GroupPost, MoviePost, TopicPost
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import HttpResponse
-
+from django.contrib.auth.models import AbstractUser
+import datetime
+from django.utils import timezone
+from users.models import User
+from django.utils import timezone
+from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
+from guardian.shortcuts import get_users_with_perms
+from guardian.shortcuts import get_objects_for_user
+from django.db.models import Q
 def login(request):
     if request.method=='POST':
         user = authenticate(request,username=request.POST['用户名'],password=request.POST['密码'])
@@ -33,17 +42,41 @@ def register(request):
     content = {'注册表单': rf}
     return render(request,'forum/register.html',content)
 
-class IndexView(ListView):
-    model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-    template_name = 'forum/index.html'
-    context_object_name = 'post_list'
-    paginate_by = 10
+def index(request):
+    return render(request,'forum/index.html')
+
+def search_index(request):
+    return render(request,'forum/search_index.html')
+
+# class BookInIndexView(ListView):
+#     model = Post        ## 告诉 django 我们要取的数据库模型是class Post
+#     template_name = 'forum/index.html'
+#     context_object_name = 'books_list'
+#     #paginate_by = 10
+
+# class MovieInIndexView(ListView):
+#     model = MoviePost
+#     template_name = 'forum/index.html'
+#     context_object_name = 'movies_list'
+#     #paginate_by = 10
+
+# class GroupInIndexView(ListView):
+#     model = Group
+#     template_name = 'forum/index.html'
+#     context_object_name = 'groups_list'
+#     #paginate_by = 10
+
+# class TopicInIndexView(ListView):
+#     model = MoviePost
+#     template_name = 'forum/index.html'
+#     context_object_name = 'topics_list'
+#     #paginate_by = 10
 
 class BooksIndexView(ListView):
-    model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 这里其实应该命名为Books
+    model = Post
     template_name = 'forum/books_index.html'    
     context_object_name = 'books_list'
-    #paginate_by = 10
+    paginate_by = 10
 
 # 记得在顶部导入 DetailView
 class PostDetailView(DetailView):
@@ -79,8 +112,6 @@ class PostDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
-<<<<<<< Updated upstream
-=======
         
         #添加为小组成员
 def add_group(request,pk):
@@ -178,7 +209,6 @@ class GroupDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
->>>>>>> Stashed changes
 
 class MoviesIndexView(ListView):
     model = MoviePost        ## 告诉 django 我们要取的数据库模型是class Post, 
@@ -204,21 +234,45 @@ class MoviePostDetailView(DetailView):
         m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
         post.toc = m.group(1) if m is not None else ''
         return post
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
 
-#class TopicIndexView(ListView):
-#   model = Post        ## 告诉 django 我们要取的数据库模型是class Post, 
-#  template_name = 'forum/books_index.html'
-#    context_object_name = 'post_list'
-#    #paginate_by = 10
+
+class PostDetailView(DetailView):
+# 这些属性的含义和 ListView 是一样的
+    model = Post
+    template_name = 'forum/book_detail.html'
+    context_object_name = 'post'
+
+    def get(self, request, *args, **kwargs):
+        # 覆写 get 方法的目的是因为每当文章被访问一次，就得将文章阅读量 +1
+        # get 方法返回的是一个 HttpResponse 实例
+        # 之所以需要先调用父类的 get 方法，是因为只有当 get 方法被调用后，
+        # 才有 self.object 属性，其值为 Post 模型实例，即被访问的文章 post
+        response = super(PostDetailView, self).get(request, *args, **kwargs)
+
+        # 将文章阅读量 +1
+        # 注意 self.object 的值就是被访问的文章 post
+        self.object.increase_views()
+
+        # 视图必须返回一个 HttpResponse 对象
+        return response
+
+    def get_object(self, queryset=None):
+        # 覆写 get_object 方法的目的是因为需要对 post 的 body 值进行渲染
+        post = super().get_object(queryset=None)
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            # 记得在顶部引入 TocExtension 和 slugify
+            TocExtension(slugify=slugify),
+        ])
+        post.body = md.convert(post.body)
+        m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+        post.toc = m.group(1) if m is not None else ''
+        return post
 class TopicIndexView(ListView):
     model = TopicPost        ## 告诉 django 我们要取的数据库模型是class Post,
     template_name = 'forum/topic_index.html'
-    context_object_name = 'topic_list'
+    context_object_name = 'topics_list'
     #paginate_by = 10
 class TopicPostDetailView(DetailView):
     model = TopicPost
@@ -240,8 +294,6 @@ class TopicPostDetailView(DetailView):
         post.toc = m.group(1) if m is not None else ''
         return post
 
-
-
 def archive(request, year, month):
     post_list = Post.objects.filter(created_time__year=year,
                                     created_time__month=month
@@ -255,11 +307,72 @@ def search(request):
     if not q:
         error_msg = "请输入搜索关键词"
         messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
-        return redirect('blog:index')
+        return redirect('forum:index')
 
-    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    book_post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    movie_post_list = MoviePost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    groups_list = Group.objects.filter(Q(name__icontains=q))
+    topic_post_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/search_index.html', {'book_post_list': book_post_list,
+                                                        'movie_post_list':movie_post_list,
+                                                        'groups_list': groups_list,
+                                                        'topic_post_list': topic_post_list})
 
+def book_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:books_index')
+
+    books_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    
+    return render(request, 'forum/books_index.html', {'books_list': books_list})
+
+def movie_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:movies_index')
+
+    movies_list = MoviePost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/movies_index.html', {'movies_list': movies_list})
+
+def group_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:groups_index')
+
+    groups_list = Group.objects.filter(Q(name__icontains=q))
+    return render(request, 'forum/groups_index.html', {'groups_list': groups_list})
+
+def group_post_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:group_detail')
+
+    group_post = GroupPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/group_detail.html', {'group_post': group_post})
+
+def topic_search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('forum:topic_index')
+
+    topics_list = TopicPost.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'forum/topic_index.html', {'topics_list': topics_list})
 
 class CategoryView(ListView):
     model = Post

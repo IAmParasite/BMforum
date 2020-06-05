@@ -1,6 +1,6 @@
 from django import template
 from ..forms import MovieCommentForm
- 
+from ..models import MovieComment
 register = template.Library()
  
  
@@ -15,6 +15,15 @@ def show_comment_form(context, post, form=None):
 @register.inclusion_tag('movie_comments/inclusions/_list.html', takes_context=True)
 def show_comments(context, post):
     comment_list = post.moviecomment_set.all().order_by('-created_time')
+    comment_count = comment_list.count()
+    return {
+        'comment_count': comment_count,
+        'comment_list': comment_list,
+    }
+
+@register.inclusion_tag('movie_comments/inclusions/_likelist.html', takes_context=True)
+def show_likemoviecomments(context, post):
+    comment_list = MovieComment.objects.all().order_by('-like_num')[:1]
     comment_count = comment_list.count()
     return {
         'comment_count': comment_count,
