@@ -6,9 +6,8 @@ from .forms import MovieCommentForm
 from django.contrib import messages
 import json
 import datetime
-from .forms import MovieCommentForm
-from django.contrib import messages
- 
+import markdown
+
 @require_POST
 def comment(request, post_pk):
     # 先获取被评论的文章，因为后面需要把评论和被评论的文章关联起来。
@@ -30,6 +29,12 @@ def comment(request, post_pk):
         # 将评论和被评论的文章关联起来。
         comment.post = post
         comment.name = request.user
+        comment.text = markdown.markdown(comment.text,
+                                  extensions=[
+                                      'markdown.extensions.extra',
+                                      'markdown.extensions.codehilite',
+                                      'markdown.extensions.toc',
+                                  ])
         # 最终将评论数据保存进数据库，调用模型实例的 save 方法
         comment.save()
         post.save()

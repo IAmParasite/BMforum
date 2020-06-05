@@ -25,7 +25,7 @@ SECRET_KEY = 'c(1l*v$xrf(-qf7_3_93q0u@h)a!tn*u_$-!m+%gzz=08^06q*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '49.235.221.218']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'reports.apps.ReportsConfig',
     'movie_reports.apps.MovieReportsConfig',
     'guardian',
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,14 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+    'xquan.common_setting.common',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static'
+)
 
 WSGI_APPLICATION = 'BMforum.wsgi.application'
 

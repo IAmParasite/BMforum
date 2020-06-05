@@ -7,8 +7,13 @@ verify_ssl = true
 
 [packages]
 django = "==2.2.3"
-django-comtrib = "*"
 pillow = "*"
+django-bootstrap3 = "*"
+django-guardian = "*"
+Markdown = "*"
+django-multiurl = "*"
+django-star-ratings = "*"
+django-comtrib = "*"
 
 [requires]
 python_version = "3.7"

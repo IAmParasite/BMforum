@@ -4,6 +4,7 @@ from users.models import User
 
 
 class TopicDiscuss(models.Model):
+    title = models.CharField('标题', max_length=70, default='title')
     name = models.CharField('名字', max_length=50)
     # name = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField('内容')
