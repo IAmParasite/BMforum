@@ -20,7 +20,10 @@ def show_comments(context, post):
         'comment_count': comment_count,
         'comment_list': comment_list,
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 @register.inclusion_tag('movie_comments/inclusions/_likelist.html', takes_context=True)
 def show_likemoviecomments(context, post):
     comment_list = MovieComment.objects.all().order_by('-like_num')[:1]
