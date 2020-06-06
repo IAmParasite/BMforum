@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 {% extends 'base.html' %}
 {% load movie_comments_extras %}
 {% load movie_reports_extras %}
@@ -18,6 +19,7 @@
                     </header>
                     <div class="entry-content clearfix">
                         {{ movie_post.body|safe }}
+                       
                     {% if request.user.is_authenticated %}
                         <h3>发表评论</h3>
                         {% show_comment_form movie_post %}

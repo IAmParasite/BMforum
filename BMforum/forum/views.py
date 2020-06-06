@@ -20,42 +20,49 @@ from guardian.shortcuts import get_users_with_perms
 from guardian.shortcuts import get_objects_for_user
 from django.db.models import Q
 from .forms import GroupPostForm
+from django.contrib.auth.decorators import login_required
 
-def add_post(request, group_id):        # 发帖
-    #post_list = Post.objects.all().order_by('-created_time')
-    group = get_object_or_404(Group, pk = group_id)
-    print("先给我把组找出来！")
-    print("小组名称为")
-    print(group.name)
-    print("小组id为")
-    print(group_id)
-    form = GroupPostForm(request.POST)
-    # 判断request的请求方法，如果是post方法，那么就处理数据
-    if form.is_valid():
-        # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
-        # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
-        post = form.save(commit = False)
-        # 将评论和被评论的文章关联起来。
-        post.group = group
-        post.auther = request.user
-        print("提交的用户是：")
-        print(request.user)
-        # 最终将评论数据保存进数据库，调用模型实例的 save 方法
-        group.save()
-        post.save()
-        # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
-        # 然后重定向到 get_absolute_url 方法返回的 URL。
-        messages.add_message(request, messages.SUCCESS, '评论发表成功！', extra_tags='success')
-        return redirect(group)
- 
-    # 检查到数据不合法，我们渲染一个预览页面，用于展示表单的错误。
-    # 注意这里被评论的文章 post 也传给了模板，因为我们需要根据 post 来生成表单的提交地址。
-    context = {
-        'post': group,
-        'form': form,
-    }
-    messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
-    return render(request, 'comments/preview.html', context=context)
+
+def add_post(request,group_id):
+    if request.user.is_authenticated:# 发帖
+        #post_list = Post.objects.all().order_by('-created_time')
+        group = get_object_or_404(Group, pk = group_id)
+        print("先给我把组找出来！")
+        print("小组名称为")
+        print(group.name)
+        print("小组id为")
+        print(group_id)
+        form = GroupPostForm(request.POST)
+        # 判断request的请求方法，如果是post方法，那么就处理数据
+        if form.is_valid():
+            # 检查到数据是合法的，调用表单的 save 方法保存数据到数据库，
+            # commit=False 的作用是仅仅利用表单的数据生成 Comment 模型类的实例，但还不保存评论数据到数据库。
+            post = form.save(commit = False)
+            # 将评论和被评论的文章关联起来。
+            post.group = group
+            post.auther = request.user
+            print("提交的用户是：")
+            print(request.user)
+            # 最终将评论数据保存进数据库，调用模型实例的 save 方法
+            group.save()
+            post.save()
+            # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
+            # 然后重定向到 get_absolute_url 方法返回的 URL。
+            messages.add_message(request, messages.SUCCESS, '评论发表成功！', extra_tags='success')
+            return redirect(group)
+     
+        # 检查到数据不合法，我们渲染一个预览页面，用于展示表单的错误。
+        # 注意这里被评论的文章 post 也传给了模板，因为我们需要根据 post 来生成表单的提交地址。
+        context = {
+            'post': group,
+            'form': form,
+        }
+        messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
+        return render(request, 'comments/preview.html', context=context)
+    else:
+        messages.add_message(request,messages.ERROR,"还未登录,请先登录")
+        return render(request,'registration/login.html',{'错误':'还未登录！'})
+        
 
 class IndexView(ListView):
     model = Post

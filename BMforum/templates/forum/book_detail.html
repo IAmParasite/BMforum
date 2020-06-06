@@ -19,7 +19,7 @@
     </header>
     <div class="entry-content clearfix">
         {{ post.body|safe }}
-
+       
     {% if request.user.is_authenticated %} 
         <h3>发表评论</h3>
         {% show_comment_form post %}
