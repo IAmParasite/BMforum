@@ -4,12 +4,15 @@
   {% for comment in comment_list %}
   <article>
     <li class="comment-item">
+      <span class="nickname">{{ comment.title }}</span>
       <span class="nickname">{{ comment.name }}</span>
       <time class="submit-date" datetime="{{ comment.created_time }}"> {{ comment.created_time }} </time>
       <div class="text">
-        {{ comment.text|linebreaks }}
+        {{ comment.text|safe|linebreaks }}
       </div>
 
+      {% if request.user.is_authenticated %}   
+      
       <div>
         <a class="collect2" href="javascript:" content_id2 ="{{ comment.id }}">
             <span class="glyphicon glyphicon-thumbs-up"> </span>
@@ -25,6 +28,8 @@
         <h4><strong><font color="grey">对评论发表举报：</font></strong></h4>
         {% show_report_form comment %}
       </div>
+
+      {% endif %}   
     </li>
   </article>
   {% empty %}

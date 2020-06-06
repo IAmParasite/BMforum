@@ -1,12 +1,13 @@
 
-<h3>评论列表，共 <span>{{ comment_count }}</span> 条评论</h3>
+<h5>讨论列表，共 <span>{{ comment_count }}</span> 条讨论</h5>
 <ul class="comment-list list-unstyled">
   {% for comment in comment_list %}
     <li class="comment-item">
+      <span class="nickname">{{ comment.title }}</span>
       <span class="nickname">{{ comment.name }}</span>
       <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
       <div class="text">
-        {{ comment.text|linebreaks }}
+        {{ comment.text|safe|linebreaks }}
       </div>
     </li>
   {% empty %}

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'reports.apps.ReportsConfig',
     'movie_reports.apps.MovieReportsConfig',
     'guardian',
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,14 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+    'xquan.common_setting.common',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static'
+)
 
 WSGI_APPLICATION = 'BMforum.wsgi.application'
 

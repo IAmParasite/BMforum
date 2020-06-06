@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Tag,Group,MemberShip,GroupPost, MoviePost, TopicPost
+from .models import Post, Category, Tag, Group ,MemberShip, GroupPost, MoviePost, TopicPost
  
 admin.site.register(Post)
 admin.site.register(Category)
