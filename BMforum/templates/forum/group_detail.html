@@ -88,7 +88,12 @@
 {% empty %}
 <div class="no-post">暂时还没有发表讨论！</div>
 {% endfor %}
+
+{% if request.user.is_authenticated %}
+{% if request.user in group_post.first.group.members.all %}
 {% show_add_form group_post.first %}
+{% endif %}
+{% endif %}
 {% endblock main %}
 
 {% block search %}

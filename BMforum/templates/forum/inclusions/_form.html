@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <article>
 
-    {{request.USER}}
-    {% for group1 in groups_list %}
-    {% for mem in group1.members.all%}
-        {{mem}}
-    {% endfor %}
-     {% endfor %}
-     {% for u in group.group.members.all %}
-     {{u}}
-     {% endfor %}{% if  request.user.is_authenticate %}
+
 
 <form action = "{% url 'forum:add' group.group.id %}" method="post" class="comment-form">
     {% csrf_token %}
@@ -20,7 +12,7 @@
       <div class="col-md-8">
           
         <label for="{{ form.body.id_for_label }}"> 主题：</label>
-        {{ form.title }}{{request.body}}11
+        {{ form.title }}
       </div>
       <div class="col-md-12">
         <label for="{{ form.body.id_for_label }}"> 内容：</label>
@@ -31,6 +23,6 @@
     
   </form>
 
-{% endif %}
+
 
 
