@@ -6,10 +6,7 @@ from django.core.validators import MinLengthValidator
 class Comment(models.Model):
     title = models.CharField('标题', max_length=70,default='title')
     name = models.CharField('名字', max_length=50)
-<<<<<<< Updated upstream
     #name = models.ForeignKey(User, on_delete=models.CASCADE)
-=======
->>>>>>> Stashed changes
     text = models.TextField('内容',validators=[MinLengthValidator(25)])
     created_time = models.DateTimeField('创建时间', default=timezone.now)
     post = models.ForeignKey('forum.Post', verbose_name='文章', on_delete=models.CASCADE)

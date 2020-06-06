@@ -23,7 +23,7 @@ def show_comments(context, post):
 
 @register.inclusion_tag('comments/inclusions/_likelist.html', takes_context=True)
 def show_likecomments(context, post):
-    comment_list = Comment.objects.all().order_by('-like_num')[:1]
+    comment_list = Comment.objects.all().order_by('-like_num')[:3]
     comment_count = comment_list.count()
     return {
         'comment_count': comment_count,
