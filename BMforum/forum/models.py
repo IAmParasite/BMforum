@@ -69,6 +69,7 @@ class GroupPost(models.Model):
    group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
    top = models.BooleanField(default = False)
    top_time = models.DateTimeField('置顶时间',default = timezone.now)
+   im = models.BooleanField(default = False)
    def save(self, *args, **kwargs):
        self.modified_time = timezone.now()
        md = markdown.Markdown(extensions=[

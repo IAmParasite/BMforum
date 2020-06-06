@@ -185,6 +185,12 @@ def topenGroupPost(request,pk,pkk):
     groupp.save()
     messages.add_message(request,messages.SUCCESS,"帖子置顶成功")
     return redirect('/groups/'+str(pkk))
+def imGroupPost(request,pk,pkk):
+    groupp = GroupPost.objects.get(pk=pk)
+    groupp.im = True
+    groupp.save()
+    messages.add_message(request,messages.SUCCESS,"帖子设精华成功")
+    return redirect('/groups/'+str(pkk))
 class GroupsIndexView(ListView):
     model = Group        ## 告诉 django 我们要取的数据库模型是class GroupPost,
     template_name = 'forum/groups_index.html'
