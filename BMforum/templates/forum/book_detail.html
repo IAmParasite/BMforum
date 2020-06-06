@@ -19,16 +19,18 @@
     </header>
     <div class="entry-content clearfix">
         {{ post.body|safe }}
-       
-    {% if request.user.is_authenticated %} 
+
+        {% if request.user.is_authenticated %}
         <h3>发表评论</h3>
         {% show_comment_form post %}
-    {% endif %}
-
         <div class="comment-list-panel">
             {% show_comments post %}
         </div>
-        
+        {% else %}
+        <div class="comment-list-panel">
+            {% show_comments_not_login post %}
+        </div>
+        {% endif %}
     </div>
 
 </article>
