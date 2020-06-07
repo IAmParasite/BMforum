@@ -160,25 +160,28 @@
                     {% endblock main %}
                 </main>
                 <aside class="col-md-4">
-                    
+                    <img src="{% static 'forum/images/logo.png' %}" alt="logo">
                     {% if request.user.is_authenticated %}
-                    <li> 欢迎 {{ user }} 用户 </li>
-                    <a href="{% url 'logout' %}">
-                        <input class="btn btn-default" type="submit" value="Logout" />
-                    </a>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">欢迎 {{ user }} 用户</div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'logout' %}">
+                                <input class="btn btn-default" type="submit" value="退出" />
+                            </a></li>
+                        </ul>
+                    </div>
                     {% else %}
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <a href="{% url 'login' %}">登录</ a>
-                                    <a href="{% url 'users:register' %}">注册</a>
-                            </h3>
-                        </div>
+                        <div class="panel-heading">未登录用户</div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'login' %}"><input class="btn btn-default" type="submit" value="登录" /></ a></li>
+                            <li class="list-group-item"><a href="{% url 'users:register' %}"><input class="btn btn-default" type="submit" value="注册" /></a></li>
+                        </ul>
                     </div>
                     {% endif %}
                     {% block toc %}
                     {% endblock toc %}
-                    
+
                 </aside>
             </div>
         </div>
