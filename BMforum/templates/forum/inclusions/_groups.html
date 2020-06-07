@@ -7,13 +7,9 @@
             <a href="{{ group.get_absolute_url }}">{{ group.name }}</a>
         </h1>
         <div class="entry-meta">
-
-
             <h3>小组成员:
                 {% for mem in group.members.all%}
-
                 {{mem}}
-
                 {%endfor%}</h3>
             <span class="group-created_time"><a href="#">创建时间:{{ group.created_time }} </a></span>
         </div>
@@ -23,7 +19,6 @@
             <a href="{{ group.get_absolute_url }}" class="more-link">查看小组<span class="meta-nav">→</span></a>
             <a href="{{group.pk}}" class="more-link" method="post" style="margin-right: 25px">加入小组</a>
             <a href="{{group.name}}" class="more-link" method="post" style="margin-right: 55px">申请管理员</a>
-
         </div>
     </div>
 </article>

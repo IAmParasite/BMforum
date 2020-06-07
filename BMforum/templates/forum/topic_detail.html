@@ -6,8 +6,8 @@
     <header class="entry-header">
         <h1 class="entry-title">{{ topic_post.title }}</h1>
         <div class="entry-meta">
-            <span class="post-category"><a href="#">{{ topic_post.category.name}}</a></span>
-
+            <span class=""><a href="{{ topic_post.get_absolute_url }}"><time class="entry-date"
+                        datetime="{{ topic_post.created_time}}">创建时间：{{ topic_post.created_time}}</time></a></span>
         </div>
     </header>
 

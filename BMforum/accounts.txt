@@ -8,11 +8,7 @@ python manage.py createsuperuser
 
 pipenv shell
 
-<<<<<<< HEAD
-root
-=======
 admin
->>>>>>> ZhuYinghao
 123
 
 root

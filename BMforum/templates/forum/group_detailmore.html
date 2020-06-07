@@ -2,25 +2,27 @@
 
 {% block main %}
 
-                <article class="post post-{{grouppost.pk}}">
-                    <header class="entry-header">
-                        <h1 class="entry-title">
-                           {{ grouppost.title }}
-                        </h1>
-                        <div class="entry-meta">
-                            
-                            <span class="post-date"><a href="#"><time class="entry-date"
-                                                                      datetime="{{grouppost.created_time}}">{{grouppost.created_time}}</time></a></span>
-                            <span class="grouppost-author"><a href="#">{{grouppost.author}}</a></span>
-                            
-                            <span class="views-count"><a href="#">{{ grouppost.views }} 阅读</a></span>
-                        </div>
-                    </header>
-                    <div class="entry-content clearfix"><p>{{grouppost.body|safe}}</p></div>
-                </article>
+<article class="post post-{{grouppost.pk}}">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            {{ grouppost.title }}
+        </h1>
+        <div class="entry-meta">
+
+            <span class="post-date"><a href="#"><time class="entry-date"
+                        datetime="{{grouppost.created_time}}">{{grouppost.created_time}}</time></a></span>
+            <span class="grouppost-author"><a href="#">{{grouppost.author}}</a></span>
+
+            <span class="views-count"><a href="#">{{ grouppost.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{grouppost.body|safe}}</p>
+    </div>
+</article>
 
 {% endblock main %}
- 
+
 {% block toc %}
 {% if grouppost.toc %}
 <div class="widget widget-content">
