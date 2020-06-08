@@ -163,25 +163,27 @@
                     <img src="{% static 'forum/images/logo.png' %}" alt="logo">
                     {% if request.user.is_authenticated %}
                     <div class="panel panel-default">
-                        <div class="panel-heading">欢迎 {{ user }} 用户</div>
-                        <ul class="list-group">
+                        <div class="panel-heading" style=text-align:center>欢迎 {{ user }} 用户</div>
+                        <ul class="list-group" style=text-align:center>
                             <li class="list-group-item"><a href="{% url 'logout' %}">
-                                <input class="btn btn-default" type="submit" value="退出" />
-                            </a></li>
+                                    <input class="btn btn-default" type="submit" value="退出" />
+                                </a></li>
                         </ul>
                     </div>
                     {% else %}
                     <div class="panel panel-default">
-                        <div class="panel-heading">未登录用户</div>
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="{% url 'login' %}"><input class="btn btn-default" type="submit" value="登录" /></ a></li>
-                            <li class="list-group-item"><a href="{% url 'users:register' %}"><input class="btn btn-default" type="submit" value="注册" /></a></li>
+                        <div class="panel-heading" style=text-align:center>未登录用户</div>
+                        <ul class="list-group" style=text-align:center>
+                            <li class="list-group-item"><a href="{% url 'login' %}"><input class="btn btn-default"
+                                        type="submit" value="登录" /></ a>
+                            </li>
+                            <li class="list-group-item"><a href="{% url 'users:register' %}"><input
+                                        class="btn btn-default" type="submit" value="注册" /></a></li>
                         </ul>
                     </div>
                     {% endif %}
                     {% block toc %}
                     {% endblock toc %}
-
                 </aside>
             </div>
         </div>
