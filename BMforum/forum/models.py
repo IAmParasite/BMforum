@@ -8,6 +8,8 @@ from markdown.extensions.toc import TocExtension
 from django.utils.text import slugify
 from django.utils.html import strip_tags
 from django.contrib.auth import get_user_model as user_model
+from django.core.validators import MinLengthValidator
+
 User = user_model()
 
 class Category(models.Model):
@@ -67,6 +69,7 @@ class GroupPost(models.Model):
    group = models.ForeignKey(Group,verbose_name='小组名',related_name='grouptalk',on_delete=models.CASCADE)
    top = models.BooleanField(default = False)
    top_time = models.DateTimeField('置顶时间',default = timezone.now)
+   im = models.BooleanField(default = False)
    def save(self, *args, **kwargs):
        self.modified_time = timezone.now()
        md = markdown.Markdown(extensions=[

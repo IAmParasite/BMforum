@@ -2,26 +2,31 @@
 {% load topic_discuss_extras %}
 
 {% block main %}
-                <article class="topic_post topic_post-{{ topic_post.pk}}">
-                    <header class="entry-header">
-                        <h1 class="entry-title">{{ topic_post.title }}</h1>
-                        <div class="entry-meta">
-                            <span class="post-category"><a href="#">{{ topic_post.category.name}}</a></span>
+<article class="topic_post topic_post-{{ topic_post.pk}}">
+    <header class="entry-header">
+        <h1 class="entry-title">{{ topic_post.title }}</h1>
+        <div class="entry-meta">
+            <span class=""><a href="{{ topic_post.get_absolute_url }}"><time class="entry-date"
+                        datetime="{{ topic_post.created_time}}">创建时间：{{ topic_post.created_time}}</time></a></span>
+        </div>
+    </header>
 
-                        </div>
-                    </header>
-                    <div class="entry-content clearfix">
-                        {{ topic_post.body|safe }}
-                        <div class="comment-list-panel">
-                            {% show_comments topic_post %}
-                        </div>
-                        <h3>发表话题讨论</h3>
-                        {% show_comment_form topic_post %}
-                    </div>
-                </article>
-                
+    <div class="entry-content clearfix">
+        {{ topic_post.body|safe }}
+        <div class="comment-list-panel">
+            {% show_comments topic_post %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <h3>发表评论</h3>
+        {% show_comment_form topic_post %}
+        {% endif %}
+    </div>
+
+</article>
+
 {% endblock main %}
- 
+
 {% block toc %}
 {% if topic_post.toc %}
 <div class="widget widget-content">

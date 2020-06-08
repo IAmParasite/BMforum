@@ -5,67 +5,93 @@
 {% for group in group_post.all %}
 {% if group.top %}
 {% get_obj_perms request.user for group as "grouppost_perms" %}
-                <article class="post post-1">
-                    <header class="entry-header">
-                        <h1 class="entry-title">
-                            <a href="{{ group.get_absolute_url }}">[置顶] {{ group.title }}</a>
-                        </h1>
-                        <div class="entry-meta">
-                            
-                            <span class="post-date"><a href="#"><time class="entry-date"
-                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-                            <span class="group-author"><a href="#">{{group.author}}</a></span>
-                            
-                            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
-                        </div>
-                    </header>
-                    <div class="entry-content clearfix">
-                        <p>{{ group.excerpt }}...</p>
-                        <div class="read-more cl-effect-14">
-                            {% if "grouppost_delete" in grouppost_perms %}
-                                <a href="/delete/{{group.pk}}/{{group.group.pk}}" class="more-link">删除<span class="meta-nav"></span></a>
-                                <a href="/top/{{group.pk}}/{{group.group.pk}}" class="more-link">置顶<span class="meta-nav"></span></a>
-                                
-                            {% endif %}
-                            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容<span class="meta-nav">→</span></a>
-                        </div>
-                    </div>
-                </article>
+<article class="post post-1">
+    <header class="entry-header">
+        {% if group.im %}
+        <h1 class="entry-title">
+
+            <a href="{{ group.get_absolute_url }} "><span style="color:red">[置顶][精华] {{ group.title }}</span></a>
+
+        </h1>
+        {% endif %}
+        {% if not group.im %}
+        <h1 class="entry-title">
+            <a href="{{ group.get_absolute_url }} "><span>[置顶]{{ group.title }}</span></a>
+
+        </h1>
+        {% endif %}
+        <div class="entry-meta">
+
+            <span class="group-created_time"><a href="#">创建时间：{{ group.created_time }} </a></span>
+            <span class="group-author"><a href="#">{{group.author}}</a></span>
+            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ group.excerpt }}...</p>
+        <div class="read-more cl-effect-14">
+            {% if "grouppost_delete" in grouppost_perms %}
+            <a href="/delete/{{group.pk}}/{{group.group.pk}}" class="more-link">删除<span class="meta-nav"></span></a>
+            <a href="/top/{{group.pk}}/{{group.group.pk}}" class="more-link">置顶<span class="meta-nav"></span></a>
+            <a href="/im/{{group.pk}}/{{group.group.pk}}" class="more-link">设为精华<span class="meta-nav"></span></a>
+
+            {% endif %}
+            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容→<span class="meta-nav"></span></a>
+        </div>
+    </div>
+</article>
 {% endif %}
 {% endfor %}
 {% for group in group_post.all %}
 {% if not group.top %}
 {% get_obj_perms request.user for group as "grouppost_perms" %}
-                <article class="post post-1">
-                    <header class="entry-header">
-                        <h1 class="entry-title">
-                            <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
-                        </h1>
-                        <div class="entry-meta">
-                            
-                            <span class="post-date"><a href="#"><time class="entry-date"
-                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
-                            <span class="group-author"><a href="#">{{group.author}}</a></span>
-                            
-                            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
-                        </div>
-                    </header>
-                    <div class="entry-content clearfix">
-                        <p>{{ group.excerpt }}...</p>
-                        <div class="read-more cl-effect-14">
-                            {% if "grouppost_delete" in grouppost_perms %}
-                                <a href="/delete/{{group.pk}}/{{group.group.pk}}" class="more-link">删除<span class="meta-nav"></span></a>
-                                <a href="/top/{{group.pk}}/{{group.group.pk}}" class="more-link">置顶<span class="meta-nav"></span></a>
-                            {% endif %}
-                            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容<span class="meta-nav">→</span></a>
-                        </div>
-                    </div>
-                </article>
+<article class="post post-1">
+    <header class="entry-header">
+        {% if group.im %}
+        <h1 class="entry-title">
+
+            <a href="{{ group.get_absolute_url }} "><span style="color:red">[精华] {{ group.title }}</span></a>
+
+        </h1>
+
+        {% endif %}
+        {% if not group.im %}
+        <h1 class="entry-title">
+            <a href="{{ group.get_absolute_url }} "><span>{{ group.title }}</span></a>
+
+        </h1>
+        {% endif %}
+        <div class="entry-meta">
+
+            <span class="post-date"><a href="#"><time class="entry-date"
+                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+            <span class="group-author"><a href="#">{{group.author}}</a></span>
+
+            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ group.excerpt }}...</p>
+        <div class="read-more cl-effect-14">
+            {% if "grouppost_delete" in grouppost_perms %}
+            <a href="/delete/{{group.pk}}/{{group.group.pk}}" class="more-link">删除<span class="meta-nav"></span></a>
+            <a href="/top/{{group.pk}}/{{group.group.pk}}" class="more-link">置顶<span class="meta-nav"></span></a>
+            <a href="/im/{{group.pk}}/{{group.group.pk}}" class="more-link">设为精华<span class="meta-nav"></span></a>
+            {% endif %}
+            <a href="{{ group.get_absolute_url }}" class="more-link">继续查看帖子内容→<span class="meta-nav"></span></a>
+        </div>
+    </div>
+</article>
 {% endif %}
 {% empty %}
 <div class="no-post">暂时还没有发表讨论！</div>
 {% endfor %}
+
+{% if request.user.is_authenticated %}
+{% if request.user in group_post.first.group.members.all %}
 {% show_add_form group_post.first %}
+{% endif %}
+{% endif %}
 {% endblock main %}
 
 {% block search %}

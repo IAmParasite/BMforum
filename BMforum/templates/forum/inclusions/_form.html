@@ -1,5 +1,8 @@
-<form action = "{% url 'forum:add' group.group.id %}" method="post" class="comment-form">
+<!DOCTYPE html>
+<article>
+  <form action="{% url 'forum:add' group.group.id %}" method="post" class="comment-form">
     {% csrf_token %}
+
     <div class="row">
       <div class="col-md-8">
         <label for="{{ form.body.id_for_label }}"> 主题：</label>
@@ -8,7 +11,7 @@
       <div class="col-md-12">
         <label for="{{ form.body.id_for_label }}"> 内容：</label>
         {{ form.body }}
-        <button type="submit" class="comment-btn">发表</button>
+        <button type="submit" class="comment-btn">发表帖子</button>
       </div>
-    </div>    <!-- row -->
+    </div> <!-- row -->
   </form>
