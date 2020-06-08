@@ -105,3 +105,11 @@
     </div>
 </div>
 {% endblock search %}
+{% block toc %}
+<a href="#" class="list-group-item active" style=text-align:center>
+    小组成员
+</a>
+{% for mem in group_post.first.group.members.all%}
+<a href="#" class="list-group-item" style=text-align:center>{{mem}}</a>
+{% endfor %}
+{% endblock toc %}
