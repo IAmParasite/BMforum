@@ -14,7 +14,6 @@
             <span class="post-author"><a href="#">{{ post.author }}</a></span>
             <span class="comments-link"><a href="#comment-area">{{ post.comment_set.count }} 评论</a></span>
             <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
-            {% ratings object %}
         </div>
     </header>
     <div class="entry-content clearfix">
@@ -38,6 +37,9 @@
 {% endblock main %}
 
 {% block toc %}
+<div class="panel panel-default">
+    <div class="panel-heading" style=text-align:center>{% ratings object %}</div>
+</div>
 {% if post.toc %}
 <div class="widget widget-content">
     <h3 class="widget-title">目录</h3>
