@@ -10,25 +10,20 @@
       <div class="text">
         {{ comment.text|safe|linebreaks }}
       </div>
-
       <div>
         <a class="collect2" href="javascript:" content_id2="{{ comment.id }}">
-          <span class="glyphicon glyphicon-thumbs-up"> </span>
-          {{ article.poll_num }} 点赞 ({{ comment.like_num }})
+          <button class="btn btn-info"><i class="fa fa-thumbs-up"></i>{{ article.poll_num }} 点赞
+            ({{ comment.like_num }})</button>
         </a>
         <a class="collect3" href="javascript:" content_id3="{{ comment.id }}">
-          <span class="glyphicon glyphicon-thumbs-up"> </span>
-          {{ article.poll_num }} 反对 ({{ comment.dislike_num }})
+          <button class="btn btn-info"><i class="fa fa-thumbs-down"></i>{{ article.poll_num }} 反对
+            ({{ comment.dislike_num }})</button>
         </a>
+        <button class="btn btn-danger"><i class="fa fa-thumbs-down"></i> 举报</button>
       </div>
-
       <div>
-        <h4><strong>
-            <font color="grey">对评论发表举报：</font>
-          </strong></h4>
         {% show_report_form comment %}
       </div>
-
     </li>
   </article>
   {% empty %}
