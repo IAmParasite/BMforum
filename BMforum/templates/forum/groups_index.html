@@ -9,11 +9,11 @@
             <a href=" {{ group.get_absolute_url }} ">{{ group.name }}</a>
         </h1>
         <div class="entry-meta">
-            <h3>小组成员:
+            <h5>小组成员：
                 {% for mem in group.members.all%}
                 {{mem}}
                 {% endfor %}
-            </h3>
+            </h5>
             <span class="group-created_time"><a href="#">创建时间：{{ group.created_time }} </a></span>
         </div>
     </header>
