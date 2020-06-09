@@ -64,10 +64,10 @@
         <div class="entry-meta">
 
             <span class="post-date"><a href="#"><time class="entry-date"
-                        datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                        datetime="{{ group.created_time}}">{{ group.created_time}}</time></a></span>
             <span class="group-author"><a href="#">{{group.author}}</a></span>
 
-            <span class="views-count"><a href="{{ movie.get_absolute_url }}">{{ group.views }} 阅读</a></span>
+            <span class="views-count"><a href="{{ group.get_absolute_url }}">{{ group.views }} 阅读</a></span>
         </div>
     </header>
     <div class="entry-content clearfix">

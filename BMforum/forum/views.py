@@ -13,7 +13,6 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 from django.utils import timezone
 from users.models import User
-from django.utils import timezone
 from guardian.shortcuts import assign
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import get_users_with_perms
@@ -40,7 +39,7 @@ def add_post(request,group_id):
             post = form.save(commit = False)
             # 将评论和被评论的文章关联起来。
             post.group = group
-            post.auther = request.user
+            post.author = request.user
             print("提交的用户是：")
             print(request.user)
             # 最终将评论数据保存进数据库，调用模型实例的 save 方法
