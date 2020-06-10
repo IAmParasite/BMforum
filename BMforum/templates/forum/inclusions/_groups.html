@@ -1,0 +1,30 @@
+<div style="background:rgb(212, 212, 212)">
+    <br>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;热点小组</h1>
+    <br>
+    {% for group in groups_list %}
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">
+                <a href="{{ group.get_absolute_url }}">{{ group.name }}</a>
+            </h1>
+            <div class="entry-meta">
+                <h5>小组成员:
+                    {% for mem in group.members.all%}
+                    {{mem}}
+                    {%endfor%}</h5>
+                <span class="group-created_time"><a href="#">创建时间:{{ group.created_time }} </a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            <div class="read-more cl-effect-14">
+                <a href="{{ group.get_absolute_url }}" class="more-link">查看小组<span class="meta-nav">→</span></a>
+                <a href="{{group.pk}}" class="more-link" method="post" style="margin-right: 25px">加入小组</a>
+                <a href="{{group.name}}" class="more-link" method="post" style="margin-right: 55px">申请管理员</a>
+            </div>
+        </div>
+    </article>
+    {% empty %}
+    <div class="no-post">暂时还没有小组！</div>
+    {% endfor %}
+</div>

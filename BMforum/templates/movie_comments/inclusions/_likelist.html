@@ -1,0 +1,19 @@
+{% load movie_reports_extras %}
+<h3>热门影评</h3>
+<ul class="comment-list list-unstyled">
+  {% for comment in comment_list %}
+    <article>
+    <li class="comment-item">
+      <span class="nickname">{{ comment.title }}</span>
+      <span class="nickname">{{ comment.name }}</span>
+      <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
+      <div class="text">
+        {{ comment.text|safe|linebreaks }}
+      </div>
+    </li>
+
+  </article>
+  {% empty %}
+    暂无评论
+  {% endfor %}
+</ul>

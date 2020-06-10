@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load forum_extras %}
+{% load comments_extras %}
+{% load reports_extras %}
+{% load movie_comments_extras %}
+{% load movie_reports_extras %}
+
+{% block main %}
+
+{% show_book_posts %}
+{% show_likecomments post %}
+{% show_movie_posts %}
+{% show_likemoviecomments post %}
+{% show_groups %}
+{% show_topic_posts %}
+{% endblock main %}
+{% block search %}
+<div id="header-search-box">
+    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+    <div id="search-form" class="search-form">
+        <form role="search" method="get" id="searchform" action="{% url 'forum:search' %}">
+            <input type="search" name="q" placeholder="搜索" required>
+            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+        </form>
+    </div>
+</div>
+
+{% endblock search %}
