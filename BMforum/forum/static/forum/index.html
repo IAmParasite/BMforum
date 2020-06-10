@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>书籍影视交流平台</title>
+
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="css/pace.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- js -->
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/pace.min.js"></script>
+    <script src="js/modernizr.custom.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="index.html"><b>书籍影视</b>交流平台</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+            <div class="col-md-8 col-sm-7 col-xs-4">
+                <nav class="main-nav" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="trigger-overlay" class="navbar-toggle">
+                            <span class="ion-navicon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="cl-effect-11"><a href="index.html" data-hover="首页">首页</a></li>
+                            <li class="cl-effect-11"><a href="full-width.html" data-hover="书籍">书籍</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="影视">影视</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="小组">小组</a></li>
+                            <li class="cl-effect-11"><a href="" data-hover="话题">话题</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+                <div id="header-search-box">
+                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+                    <div id="search-form" class="search-form">
+                        <form role="search" method="get" id="searchform" action="#">
+                            <input type="search" placeholder="搜索" required>
+                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- col-md-8 -->
+        </div>
+    </header>
+</div>
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+                            <a href="single.html">热门书籍</a>
+                        </h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">科幻</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                            <span class="post-author"><a href="#">雨果</a></span>
+                            <span class="comments-link"><a href="#">999 评论</a></span>
+                            <span class="views-count"><a href="#">999 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>这是一本好书</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="#" class="more-link">继续阅读...<span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+
+                
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+                <div class="pagination">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">4</a></li>
+                        <li><a href="">5</a></li>
+                        <li class="current"><a href="">6</a></li>
+                        <li><a href="">7</a></li>
+                        <li><a href="">8</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">11</a></li>
+                    </ul>
+                </div>
+            </main>
+            <aside class="col-md-4">
+                <div>
+                    {% if request.user.is_authenticated %}
+                    <!-- Form -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Logged In
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="form-group">Hi:{{ user }}<img src="/media/{{ user.avatar }}" alt=""> <a href="{% url 'logout' %}"><input class="btn btn-default" type="submit" value="Logout" /></a></div>
+                            <div><a  class="glyphicon glyphicon-edit" href="{% url 'posts:add' %}">发帖</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="glyphicon glyphicon-home" href="{% url 'posts:profile' user.pk%}">个人主页</a> </div>
+
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Log In
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                        <p>你还没有登录，请
+        {#                    <button class="btn btn-default"><a href="{% url 'login' %}">登录</a></button>#}
+                            <a href="{% url 'login' %}">登录</a>
+                            或者
+                            <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
+                        </p>
+        {#					<form action="/focus/login/" method="post">#}
+        {#						{% csrf_token %}#}
+        {#						{{ loginform.non_field_errors }}#}
+        {#						<div class="form-group">#}
+        {#							{{ loginform.uid }}#}
+        {#						<!--	<input type="text" class="form-control" id="uid" name="uid" placeholder="Username">  -->#}
+        {#						</div>#}
+        {#						<div class="form-group">#}
+        {#							{{ loginform.pwd }}#}
+        {#						<!--	<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">  -->#}
+        {#						</div>#}
+        {#						<button type="submit" class="btn btn-default">Log In</button>#}
+        {#					</form>#}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django 博客开发入门教程：前言</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">归档</h3>
+                    <ul>
+                        <li>
+                            <a href="#">2017 年 5 月</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="widget widget-tag-cloud">
+                    <h3 class="widget-title">标签云</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">&copy 2020 BUAA 软件学院
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
