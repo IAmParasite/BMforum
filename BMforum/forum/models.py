@@ -60,7 +60,7 @@ class MemberShip(models.Model):
 
 class GroupPost(models.Model):
    title = models.CharField('标题', max_length=70)
-   body = models.TextField(validators=[MinLengthValidator(25)])
+   body = models.TextField()
    created_time = models.DateTimeField('创建时间', default=timezone.now)
    modified_time = models.DateTimeField('修改时间')
    excerpt = models.CharField(max_length=200, blank=True)
