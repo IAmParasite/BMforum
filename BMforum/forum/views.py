@@ -13,7 +13,6 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 from django.utils import timezone
 from users.models import User
-from django.utils import timezone
 from guardian.shortcuts import assign
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import get_users_with_perms
@@ -40,7 +39,7 @@ def add_post(request,group_id):
             post = form.save(commit = False)
             # 将评论和被评论的文章关联起来。
             post.group = group
-            post.auther = request.user
+            post.author = request.user
             print("提交的用户是：")
             print(request.user)
             # 最终将评论数据保存进数据库，调用模型实例的 save 方法
@@ -48,7 +47,7 @@ def add_post(request,group_id):
             post.save()
             # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
             # 然后重定向到 get_absolute_url 方法返回的 URL。
-            messages.add_message(request, messages.SUCCESS, '评论发表成功！', extra_tags='success')
+            messages.add_message(request, messages.SUCCESS, '小组帖子发表成功！', extra_tags='success')
             return redirect(group)
      
         # 检查到数据不合法，我们渲染一个预览页面，用于展示表单的错误。
@@ -57,8 +56,8 @@ def add_post(request,group_id):
             'post': group,
             'form': form,
         }
-        messages.add_message(request, messages.ERROR, '评论发表失败！请修改表单中的错误后重新提交。', extra_tags='danger')
-        return render(request, 'comments/preview.html', context=context)
+        messages.add_message(request, messages.ERROR, '评论发表失败！请增加你发表帖子的字数。', extra_tags='danger')
+        return redirect(group)
     else:
         messages.add_message(request,messages.ERROR,"还未登录,请先登录")
         return render(request,'registration/login.html',{'错误':'还未登录！'})
